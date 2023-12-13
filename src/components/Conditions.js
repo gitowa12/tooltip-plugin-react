@@ -69,7 +69,7 @@ const Conditions = ({ parentId, updateTableData }) => {
               padding: 1,
             }}
             id="condirion-field-name"
-            label="フィールド名"
+            label="フィールド名_あああ"
             size="small"
             defaultValue={data.fieldName}
             onChange={(e) => handleTextChange(e, data.id)}
