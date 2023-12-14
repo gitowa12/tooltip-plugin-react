@@ -6,15 +6,8 @@ import generateUniqueId from "../utility/UnipueId";
 
 import { Add, Remove } from "@mui/icons-material";
 
-const Conditions = ({ config, parentId, updateTableData }) => {
-  const [conditionData, setConditionData] = useState([
-    {
-      id: generateUniqueId(),
-      fieldName: "",
-      filedValue: "",
-    },
-  ]);
-  // console.log(Object.values(config));
+const Conditions = ({ config, parentId, updateTableData, conditionConfig }) => {
+  const [conditionData, setConditionData] = useState(conditionConfig);
 
   useEffect(() => {
     console.log(conditionData);
@@ -82,7 +75,7 @@ const Conditions = ({ config, parentId, updateTableData }) => {
             id="field-name"
             label="フィールド名"
             size="small"
-            defaultValue={data.fieldName}
+            value={data.fieldName}
             onChange={(e) => handleTextChange(e, data.id)}
           />
           <TextField
@@ -93,7 +86,7 @@ const Conditions = ({ config, parentId, updateTableData }) => {
             id="field-value"
             label="値"
             size="small"
-            defaultValue={data.filedValue}
+            value={data.filedValue}
             onChange={(e) => handleTextChange(e, data.id)}
           />
           <IconButton aria-label="delete" fontSize="small" color="primary" onClick={() => addRow(index)}>

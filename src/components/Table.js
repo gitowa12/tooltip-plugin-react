@@ -10,12 +10,12 @@ import Paper from "@mui/material/Paper";
 import generateUniqueId from "../utility/UnipueId";
 import Conditions from "./Conditions";
 
-const TableComponent = ({ config }) => {
+const TableComponent = ({ beforeConfig }) => {
   // テーブルのデータを管理する状態
   // console.log("config", config);
   // console.log(Object.values(config));
 
-  const [tableData, setTableData] = useState(Object.values(config));
+  const [tableData, setTableData] = useState(beforeConfig);
 
   useEffect(() => {
     console.log(tableData);
@@ -27,7 +27,13 @@ const TableComponent = ({ config }) => {
       rowNum: `${tableData.length}`,
       id: generateUniqueId(), // 新しい行のIDを生成
       name: `Row ${tableData.length + 1}`, // 新しい行の名前を生成
-      conditionData: "",
+      conditionData: [
+        {
+          id: generateUniqueId(),
+          fieldName: "",
+          filedValue: "",
+        },
+      ],
     };
     setTableData([...tableData, newRow]);
   };
@@ -99,7 +105,11 @@ const TableComponent = ({ config }) => {
                   {data.id}
                 </TableCell>
                 <TableCell component="th" scope="row" sx={{ padding: 2 }}>
-                  <Conditions config={config} parentId={data.id} updateTableData={updateTableData} />
+                  <Conditions
+                    parentId={data.id}
+                    updateTableData={updateTableData}
+                    conditionConfig={data.conditionData}
+                  />
                 </TableCell>
                 <TableCell>
                   <input value={data.name} onChange={(e) => handleInputChange(e, data.id)} />
@@ -117,7 +127,9 @@ const TableComponent = ({ config }) => {
       <Button variant="contained" onClick={handleSave}>
         保存
       </Button>
-      <Button variant="contained">キャンセル</Button>
+      <Button variant="contained" onClick={() => history.back()}>
+        キャンセル
+      </Button>
     </>
   );
 };
