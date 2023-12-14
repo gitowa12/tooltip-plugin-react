@@ -6,8 +6,15 @@ import generateUniqueId from "../utility/UnipueId";
 
 import { Add, Remove } from "@mui/icons-material";
 
-const Conditions = ({ parentId, updateTableData }) => {
-  const [conditionData, setConditionData] = useState([{ id: generateUniqueId(), fieldName: "", filedValue: "" }]);
+const Conditions = ({ config, parentId, updateTableData }) => {
+  const [conditionData, setConditionData] = useState([
+    {
+      id: generateUniqueId(),
+      fieldName: "",
+      filedValue: "",
+    },
+  ]);
+  // console.log(Object.values(config));
 
   useEffect(() => {
     console.log(conditionData);
@@ -34,17 +41,21 @@ const Conditions = ({ parentId, updateTableData }) => {
     setConditionData(updatedData);
   };
 
-  const handleTextChange = (e, id) => {
+  const handleTextChange = (e, stackId) => {
     // 新しい値を取得
     const newValue = e.target.value;
 
     // 状態を更新
     setConditionData((prevConditionData) => {
-      return prevConditionData.map((row) => {
-        if (row.id === id) {
-          return { ...row, name: newValue };
+      return prevConditionData.map((data) => {
+        if (data.id === stackId) {
+          if (e.target.id === "field-name") {
+            return { ...data, fieldName: newValue };
+          } else if (e.target.id === "field-value") {
+            return { ...data, filedValue: newValue };
+          }
         }
-        return row;
+        return data;
       });
     });
   };
@@ -62,14 +73,14 @@ const Conditions = ({ parentId, updateTableData }) => {
       autoComplete="off"
     >
       {conditionData.map((data, index) => (
-        <Stack key={data.id} num={data.num} direction="row" alignItems="center">
+        <Stack key={data.id} direction="row" alignItems="center">
           <TextField
             sx={{
               width: 240,
               padding: 1,
             }}
-            id="condirion-field-name"
-            label="フィールド名_あああ"
+            id="field-name"
+            label="フィールド名"
             size="small"
             defaultValue={data.fieldName}
             onChange={(e) => handleTextChange(e, data.id)}
@@ -79,10 +90,10 @@ const Conditions = ({ parentId, updateTableData }) => {
               width: 240,
               padding: 1,
             }}
-            id="condition-value"
+            id="field-value"
             label="値"
             size="small"
-            defaultValue=""
+            defaultValue={data.filedValue}
             onChange={(e) => handleTextChange(e, data.id)}
           />
           <IconButton aria-label="delete" fontSize="small" color="primary" onClick={() => addRow(index)}>

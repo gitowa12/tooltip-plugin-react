@@ -99,7 +99,7 @@ const TableComponent = ({ config }) => {
                   {data.id}
                 </TableCell>
                 <TableCell component="th" scope="row" sx={{ padding: 2 }}>
-                  <Conditions parentId={data.id} updateTableData={updateTableData} />
+                  <Conditions config={config} parentId={data.id} updateTableData={updateTableData} />
                 </TableCell>
                 <TableCell>
                   <input value={data.name} onChange={(e) => handleInputChange(e, data.id)} />
