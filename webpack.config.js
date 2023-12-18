@@ -6,7 +6,6 @@ module.exports = {
   mode: "development",
   entry: {
     desktop: "./src/desktop/index.js",
-    // mobile: './src/js/mobile.js',
     config: "./src/config/index.js",
   },
   output: {

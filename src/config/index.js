@@ -23,4 +23,5 @@ console.log(config);
 
 const container = document.getElementById("config-root");
 const root = createRoot(container);
+console.log("hello1");
 root.render(<App beforeConfig={config} />);

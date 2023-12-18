@@ -2,16 +2,22 @@ import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { Button, IconButton, Stack } from "@mui/material";
-import generateUniqueId from "../utility/UnipueId";
+import generateUniqueId from "../../utility/UnipueId";
+import { Add, AddCircle, Remove, RemoveCircle } from "@mui/icons-material";
 
-import { Add, Remove } from "@mui/icons-material";
-
-const Conditions = ({ config, parentId, updateTableData, conditionConfig }) => {
-  const [conditionData, setConditionData] = useState(conditionConfig);
+const Conditions = ({ parentId, updateTableData, conditionConfig }) => {
+  const initData = [
+    {
+      id: generateUniqueId(),
+      fieldName: "",
+      filedValue: "",
+    },
+  ];
+  const [conditionData, setConditionData] = useState(conditionConfig || initData);
 
   useEffect(() => {
     console.log(conditionData);
-    updateTableData(parentId, conditionData);
+    updateTableData(parentId, conditionData, "conditions");
   }, [conditionData]);
 
   const addRow = (index) => {
@@ -69,7 +75,7 @@ const Conditions = ({ config, parentId, updateTableData, conditionConfig }) => {
         <Stack key={data.id} direction="row" alignItems="center">
           <TextField
             sx={{
-              width: 240,
+              width: 220,
               padding: 1,
             }}
             id="field-name"
@@ -80,7 +86,7 @@ const Conditions = ({ config, parentId, updateTableData, conditionConfig }) => {
           />
           <TextField
             sx={{
-              width: 240,
+              width: 160,
               padding: 1,
             }}
             id="field-value"
@@ -89,11 +95,23 @@ const Conditions = ({ config, parentId, updateTableData, conditionConfig }) => {
             value={data.filedValue}
             onChange={(e) => handleTextChange(e, data.id)}
           />
-          <IconButton aria-label="delete" fontSize="small" color="primary" onClick={() => addRow(index)}>
-            <Add />
+          <IconButton
+            sx={{ paddingRight: 1 }}
+            aria-label="delete"
+            fontSize="small"
+            color="primary"
+            onClick={() => addRow(index)}
+          >
+            <AddCircle fontSize="inherit" />
           </IconButton>
-          <IconButton aria-label="delete" fontSize="small" color="secondary" onClick={() => removeRow(data.id)}>
-            <Remove />
+          <IconButton
+            sx={{ padding: 0 }}
+            aria-label="delete"
+            fontSize="small"
+            color="secondary"
+            onClick={() => removeRow(data.id)}
+          >
+            <RemoveCircle fontSize="inherit" />
           </IconButton>
         </Stack>
       ))}
