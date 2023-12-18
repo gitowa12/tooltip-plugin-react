@@ -31,7 +31,7 @@ const TableComponent = ({ beforeConfig }) => {
         {
           id: generateUniqueId(),
           fieldName: "",
-          filedValue: "",
+          fieldValue: "",
         },
       ],
       targetData: [
@@ -66,20 +66,6 @@ const TableComponent = ({ beforeConfig }) => {
     console.log(config);
     // kintoneの設定情報を保存するメソッドを呼び出す
     kintone.plugin.app.setConfig(config);
-  };
-
-  const handleInputChange = (e, id) => {
-    // 新しい値を取得
-    const newValue = e.target.value;
-    // 状態を更新
-    setTableData((prevTableData) => {
-      return prevTableData.map((row) => {
-        if (row.id === id) {
-          return { ...row, name: newValue };
-        }
-        return row;
-      });
-    });
   };
 
   //子コンポーネントに渡す

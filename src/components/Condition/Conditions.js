@@ -10,7 +10,7 @@ const Conditions = ({ parentId, updateTableData, conditionConfig }) => {
     {
       id: generateUniqueId(),
       fieldName: "",
-      filedValue: "",
+      fieldValue: "",
     },
   ];
   const [conditionData, setConditionData] = useState(conditionConfig || initData);
@@ -24,7 +24,7 @@ const Conditions = ({ parentId, updateTableData, conditionConfig }) => {
     const newRow = {
       id: generateUniqueId(),
       fieldName: "",
-      filedValue: "",
+      fieldValue: "",
     };
 
     // 状態を更新して新しい行を追加
@@ -51,7 +51,7 @@ const Conditions = ({ parentId, updateTableData, conditionConfig }) => {
           if (e.target.id === "field-name") {
             return { ...data, fieldName: newValue };
           } else if (e.target.id === "field-value") {
-            return { ...data, filedValue: newValue };
+            return { ...data, fieldValue: newValue };
           }
         }
         return data;
@@ -92,7 +92,7 @@ const Conditions = ({ parentId, updateTableData, conditionConfig }) => {
             id="field-value"
             label="値"
             size="small"
-            value={data.filedValue}
+            value={data.fieldValue}
             onChange={(e) => handleTextChange(e, data.id)}
           />
           <IconButton

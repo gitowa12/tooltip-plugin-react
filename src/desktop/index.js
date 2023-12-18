@@ -1,6 +1,7 @@
 jQuery.noConflict();
 (function ($, PLUGIN_ID) {
   "use strict";
+
   const CONFIG = kintone.plugin.app.getConfig(PLUGIN_ID);
 
   const mainFields = Object.values(cybozu.data.page.FORM_DATA.schema.table.fieldList);
@@ -11,9 +12,8 @@ jQuery.noConflict();
   function tooltip(field_id, message, display, url) {
     //フィールド名とサブテーブル名とスペースフィールドの要素を取得
     const parentElement =
-      document.querySelector(`.label-${field_id}`) ||
-      document.querySelector(`.subtable-row-label-${field_id}`) ||
-      kintone.app.record.getSpaceElement(field_id);
+      document.querySelector(`.label-${field_id}`) || document.querySelector(`.subtable-row-label-${field_id}`);
+    // kintone.app.record.getSpaceElement(field_id);
 
     if (display === "tooltip") {
       //ツールチップ要素を作成
@@ -136,9 +136,13 @@ jQuery.noConflict();
   let conditionAllay = new Set();
   Object.keys(CONFIG).forEach((key) => {
     const obj = JSON.parse(CONFIG[key]);
-    conditionAllay.add(obj.condition);
-    conditionAllay.delete("");
+    const conditionData = obj.conditionData || [];
+    conditionData.forEach((data) => {
+      conditionAllay.add(data.fieldName);
+    });
   });
+  console.log(conditionAllay);
+
   const changeEvents = [];
   conditionAllay.forEach((el) => {
     changeEvents.push(`app.record.create.change.${el}`);
@@ -148,27 +152,34 @@ jQuery.noConflict();
   kintone.events.on(["app.record.detail.show", "app.record.create.show", "app.record.edit.show", changeEvents], (e) => {
     deleteTooltips();
     const record = e.record;
+
     // console.log(record);
     if (CONFIG) {
       if (Object.keys(CONFIG).length) {
         Object.keys(CONFIG).forEach((key) => {
           const obj = JSON.parse(CONFIG[key]);
-          const condition = obj.condition;
-          const conditionValue = obj.conditionValue;
-          const field_id = obj.field_id;
-          const status = obj.status;
-          const message = obj.message;
-          const display = obj.display;
-          const url = obj.url;
-
-          if (field_id !== "" && status === "ON") {
-            if (condition === "") {
-              tooltip(field_id, message, display, url);
-            } else {
-              if (conditionValue === record[condition].value) {
-                tooltip(field_id, message, display, url);
+          const conditionData = obj.conditionData;
+          console.log(obj);
+          let conditionBoolean = true;
+          conditionData.forEach((data) => {
+            const conditionField = data.fieldName;
+            if (conditionField !== "") {
+              console.log(record[conditionField].value);
+              if (record[conditionField].value !== data.fieldValue) {
+                conditionBoolean = false;
               }
             }
+          });
+
+          if (conditionBoolean) {
+            const targetData = obj.targetData;
+            targetData.forEach((data) => {
+              const field_id = data.fieldName;
+              const message = data.message;
+              const display = data.display;
+              const url = data.url;
+              tooltip(field_id, message, display, url);
+            });
           }
         });
       }

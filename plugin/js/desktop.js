@@ -1,178 +1,32 @@
-jQuery.noConflict();
-(function ($, PLUGIN_ID) {
-  "use strict";
-  const CONFIG = kintone.plugin.app.getConfig(PLUGIN_ID);
+/*
+ * ATTENTION: The "eval" devtool has been used (maybe by default in mode: "development").
+ * This devtool is neither made for production nor for readable output files.
+ * It uses "eval()" calls to create a separate source file in the browser devtools.
+ * If you are trying to read the output file, select a different devtool (https://webpack.js.org/configuration/devtool/)
+ * or disable the default devtool with "devtool: false".
+ * If you are looking for production-ready output files, see mode: "production" (https://webpack.js.org/configuration/mode/).
+ */
+/******/ (() => { // webpackBootstrap
+/******/ 	var __webpack_modules__ = ({
 
-  const mainFields = Object.values(cybozu.data.page.FORM_DATA.schema.table.fieldList);
-  const subTables = Object.values(cybozu.data.page.FORM_DATA.schema.subTable);
-  console.log("mainFields", mainFields);
-  console.log("subTables", subTables);
+/***/ "./src/desktop/index.js":
+/*!******************************!*\
+  !*** ./src/desktop/index.js ***!
+  \******************************/
+/***/ (() => {
 
-  function tooltip(field_id, message, display, url) {
-    //フィールド名とサブテーブル名とスペースフィールドの要素を取得
-    const parentElement =
-      document.querySelector(`.label-${field_id}`) ||
-      document.querySelector(`.subtable-row-label-${field_id}`) ||
-      kintone.app.record.getSpaceElement(field_id);
+eval("jQuery.noConflict();\n(function ($, PLUGIN_ID) {\n  \"use strict\";\n\n  var CONFIG = kintone.plugin.app.getConfig(PLUGIN_ID);\n  var mainFields = Object.values(cybozu.data.page.FORM_DATA.schema.table.fieldList);\n  var subTables = Object.values(cybozu.data.page.FORM_DATA.schema.subTable);\n  console.log(\"mainFields\", mainFields);\n  console.log(\"subTables\", subTables);\n  function tooltip(field_id, message, display, url) {\n    //フィールド名とサブテーブル名とスペースフィールドの要素を取得\n    var parentElement = document.querySelector(\".label-\".concat(field_id)) || document.querySelector(\".subtable-row-label-\".concat(field_id));\n    // kintone.app.record.getSpaceElement(field_id);\n\n    if (display === \"tooltip\") {\n      //ツールチップ要素を作成\n      var obj = document.createElement(\"div\");\n      obj.innerHTML = \"?\";\n      obj.dataset.tooltip = message;\n      obj.className = \"help-tooltip\";\n      //要素の配置\n      parentElement.appendChild(obj);\n\n      //ツールチップの表示・非表示の切り替え\n      var isTooltipVisible = false;\n      obj.onclick = function () {\n        var tooltips = $(this).find(\".tooltips\");\n        if (isTooltipVisible) {\n          tooltips.remove();\n        } else {\n          var text = $(this).attr(\"data-tooltip\");\n          tooltips = $('<div class=\"tooltips\">' + text + \"</div>\");\n          $(this).append(tooltips);\n        }\n        isTooltipVisible = !isTooltipVisible;\n      };\n    } else if (display === \"alert\") {\n      //ツールチップの要素を作成\n      var _obj = document.createElement(\"div\");\n      _obj.innerHTML = \"?\";\n      _obj.dataset.tooltip = message;\n      _obj.className = \"help-alert\";\n      parentElement.appendChild(_obj);\n      _obj.onclick = function () {\n        swal({\n          title: \"インフォメーション\",\n          text: message,\n          icon: \"info\"\n        });\n      };\n    } else if (display === \"subWindow\") {\n      //ツールチップの要素を作成\n      var _obj2 = document.createElement(\"div\");\n      _obj2.innerHTML = \"?\";\n      _obj2.dataset.tooltip = message;\n      _obj2.className = \"help-subWindow\";\n      parentElement.appendChild(_obj2);\n      _obj2.onclick = function () {\n        openSubWindow(url, 600, 500);\n      };\n    } else if (display === \"link\") {\n      //ツールチップ要素の作成\n      var container = document.createElement(\"div\");\n      container.style.display = \"flex\";\n      container.style.alignItems = \"center\";\n      var _obj3 = document.createElement(\"div\");\n      _obj3.innerText = message;\n      _obj3.className = \"help-link\";\n      _obj3.style.display = \"inline-block\";\n      _obj3.style.color = \"red\";\n      _obj3.style.textDecoration = \"underline\";\n      _obj3.style.cursor = \"pointer\";\n      var icon = document.createElement(\"img\");\n      icon.src = \"https://www.adobe.com/content/dam/cc/en/legal/images/badges/PDF_24.png\";\n      icon.style.width = \"21px\";\n      container.appendChild(_obj3);\n      container.appendChild(icon);\n      parentElement.appendChild(container);\n      container.onclick = function () {\n        openSubWindow(url, 600, 500);\n      };\n    } else if (display === \"button\") {\n      //ツールチップ要素の作成\n      var _obj4 = document.createElement(\"div\");\n      _obj4.innerText = message;\n      _obj4.className = \"help-button\";\n      parentElement.appendChild(_obj4);\n      _obj4.onclick = function () {\n        openSubWindow(url, 600, 500);\n      };\n    }\n  }\n  function deleteTooltips() {\n    var tooltipElements = document.querySelectorAll(\".help-tooltip, .help-alert, .help-subWindow, .help-link\");\n    tooltipElements.forEach(function (el) {\n      el.remove();\n    });\n  }\n\n  //サブウィンドウが開閉を追跡する変数\n  var subWindow = \"\";\n  function openSubWindow(url, windowHeight, windowWidth) {\n    //既にサブウィンドウを開いていたら、閉じる\n    if (subWindow) {\n      subWindow.close();\n    }\n    var subTop = screenY + (window.outerHeight - windowHeight) / 2;\n    var subLeft = screenX + window.outerWidth / 1.2; //画面左\n    subWindow = window.open(url, \"url\", \"width = \".concat(windowWidth, \", height = \").concat(windowHeight, \", top = \").concat(subTop, \", left = \").concat(subLeft, \", toolbar = yes, resizable = yes, scrollbar = yes\"));\n\n    //画面リロードのタイミングでサブウィンドウが開いていれば、サブウィンドウ閉じる\n    window.addEventListener(\"beforeunload\", function () {\n      if (subWindow) {\n        subWindow.close();\n      }\n    });\n  }\n\n  //条件元となるフィールドをプラグイン設定から取得して、イベント配列を生成\n  var conditionAllay = new Set();\n  Object.keys(CONFIG).forEach(function (key) {\n    var obj = JSON.parse(CONFIG[key]);\n    var conditionData = obj.conditionData || [];\n    conditionData.forEach(function (data) {\n      conditionAllay.add(data.fieldName);\n    });\n  });\n  console.log(conditionAllay);\n  var changeEvents = [];\n  conditionAllay.forEach(function (el) {\n    changeEvents.push(\"app.record.create.change.\".concat(el));\n    changeEvents.push(\"app.record.edit.change.\".concat(el));\n  });\n  kintone.events.on([\"app.record.detail.show\", \"app.record.create.show\", \"app.record.edit.show\", changeEvents], function (e) {\n    deleteTooltips();\n    var record = e.record;\n\n    // console.log(record);\n    if (CONFIG) {\n      if (Object.keys(CONFIG).length) {\n        Object.keys(CONFIG).forEach(function (key) {\n          var obj = JSON.parse(CONFIG[key]);\n          var conditionData = obj.conditionData;\n          console.log(obj);\n          var conditionBoolean = true;\n          conditionData.forEach(function (data) {\n            var conditionField = data.fieldName;\n            if (conditionField !== \"\") {\n              console.log(record[conditionField].value);\n              if (record[conditionField].value !== data.fieldValue) {\n                conditionBoolean = false;\n              }\n            }\n          });\n          if (conditionBoolean) {\n            var targetData = obj.targetData;\n            targetData.forEach(function (data) {\n              var field_id = data.fieldName;\n              var message = data.message;\n              var display = data.display;\n              var url = data.url;\n              tooltip(field_id, message, display, url);\n            });\n          }\n        });\n      }\n    }\n    return e;\n  });\n})(jQuery, kintone.$PLUGIN_ID);\n\n//# sourceURL=webpack://react/./src/desktop/index.js?");
 
-    if (display === "tooltip") {
-      //ツールチップ要素を作成
-      const obj = document.createElement("div");
-      obj.innerHTML = "?";
-      obj.dataset.tooltip = message;
-      obj.className = "help-tooltip";
-      //要素の配置
-      parentElement.appendChild(obj);
+/***/ })
 
-      //ツールチップの表示・非表示の切り替え
-      let isTooltipVisible = false;
-      obj.onclick = function () {
-        let tooltips = $(this).find(".tooltips");
-        if (isTooltipVisible) {
-          tooltips.remove();
-        } else {
-          const text = $(this).attr("data-tooltip");
-          tooltips = $('<div class="tooltips">' + text + "</div>");
-          $(this).append(tooltips);
-        }
-        isTooltipVisible = !isTooltipVisible;
-      };
-    } else if (display === "alert") {
-      //ツールチップの要素を作成
-      const obj = document.createElement("div");
-      obj.innerHTML = "?";
-      obj.dataset.tooltip = message;
-      obj.className = "help-alert";
-      parentElement.appendChild(obj);
-
-      obj.onclick = function () {
-        swal({
-          title: "インフォメーション",
-          text: message,
-          icon: "info",
-        });
-      };
-    } else if (display === "subWindow") {
-      //ツールチップの要素を作成
-      const obj = document.createElement("div");
-      obj.innerHTML = "?";
-      obj.dataset.tooltip = message;
-      obj.className = "help-subWindow";
-      parentElement.appendChild(obj);
-
-      obj.onclick = () => {
-        openSubWindow(url, 600, 500);
-      };
-    } else if (display === "link") {
-      //ツールチップ要素の作成
-      const container = document.createElement("div");
-      container.style.display = "flex";
-      container.style.alignItems = "center";
-
-      const obj = document.createElement("div");
-      obj.innerText = message;
-      obj.className = "help-link";
-      obj.style.display = "inline-block";
-      obj.style.color = "red";
-      obj.style.textDecoration = "underline";
-      obj.style.cursor = "pointer";
-
-      const icon = document.createElement("img");
-      icon.src = "https://www.adobe.com/content/dam/cc/en/legal/images/badges/PDF_24.png";
-      icon.style.width = "21px";
-
-      container.appendChild(obj);
-      container.appendChild(icon);
-      parentElement.appendChild(container);
-
-      container.onclick = () => {
-        openSubWindow(url, 600, 500);
-      };
-    } else if (display === "button") {
-      //ツールチップ要素の作成
-      const obj = document.createElement("div");
-      obj.innerText = message;
-      obj.className = "help-button";
-
-      parentElement.appendChild(obj);
-      obj.onclick = () => {
-        openSubWindow(url, 600, 500);
-      };
-    }
-  }
-
-  function deleteTooltips() {
-    const tooltipElements = document.querySelectorAll(".help-tooltip, .help-alert, .help-subWindow, .help-link");
-    tooltipElements.forEach((el) => {
-      el.remove();
-    });
-  }
-
-  //サブウィンドウが開閉を追跡する変数
-  let subWindow = "";
-  function openSubWindow(url, windowHeight, windowWidth) {
-    //既にサブウィンドウを開いていたら、閉じる
-    if (subWindow) {
-      subWindow.close();
-    }
-
-    const subTop = screenY + (window.outerHeight - windowHeight) / 2;
-    const subLeft = screenX + window.outerWidth / 1.2; //画面左
-    subWindow = window.open(
-      url,
-      "url",
-      `width = ${windowWidth}, height = ${windowHeight}, top = ${subTop}, left = ${subLeft}, toolbar = yes, resizable = yes, scrollbar = yes`
-    );
-
-    //画面リロードのタイミングでサブウィンドウが開いていれば、サブウィンドウ閉じる
-    window.addEventListener("beforeunload", () => {
-      if (subWindow) {
-        subWindow.close();
-      }
-    });
-  }
-
-  //条件元となるフィールドをプラグイン設定から取得して、イベント配列を生成
-  let conditionAllay = new Set();
-  Object.keys(CONFIG).forEach((key) => {
-    const obj = JSON.parse(CONFIG[key]);
-    conditionAllay.add(obj.condition);
-    conditionAllay.delete("");
-  });
-  const changeEvents = [];
-  conditionAllay.forEach((el) => {
-    changeEvents.push(`app.record.create.change.${el}`);
-    changeEvents.push(`app.record.edit.change.${el}`);
-  });
-
-  kintone.events.on(["app.record.detail.show", "app.record.create.show", "app.record.edit.show", changeEvents], (e) => {
-    deleteTooltips();
-    const record = e.record;
-    // console.log(record);
-    if (CONFIG) {
-      if (Object.keys(CONFIG).length) {
-        Object.keys(CONFIG).forEach((key) => {
-          const obj = JSON.parse(CONFIG[key]);
-          const condition = obj.condition;
-          const conditionValue = obj.conditionValue;
-          const field_id = obj.field_id;
-          const status = obj.status;
-          const message = obj.message;
-          const display = obj.display;
-          const url = obj.url;
-
-          if (field_id !== "" && status === "ON") {
-            if (condition === "") {
-              tooltip(field_id, message, display, url);
-            } else {
-              if (conditionValue === record[condition].value) {
-                tooltip(field_id, message, display, url);
-              }
-            }
-          }
-        });
-      }
-    }
-    return e;
-  });
-})(jQuery, kintone.$PLUGIN_ID);
+/******/ 	});
+/************************************************************************/
+/******/ 	
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	// This entry module can't be inlined because the eval devtool is used.
+/******/ 	var __webpack_exports__ = {};
+/******/ 	__webpack_modules__["./src/desktop/index.js"]();
+/******/ 	
+/******/ })()
+;

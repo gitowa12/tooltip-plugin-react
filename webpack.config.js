@@ -18,6 +18,7 @@ module.exports = {
     rules: [
       {
         test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
         use: [
           {
             loader: "babel-loader",
@@ -53,6 +54,7 @@ module.exports = {
     },
     port: 3000,
   },
+  // devtool: "eval-source-map",
   resolve: {
     extensions: [".ts", ".tsx", ".js", "jsx", ".json"],
   },
