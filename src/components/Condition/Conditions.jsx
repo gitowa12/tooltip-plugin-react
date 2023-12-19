@@ -2,18 +2,28 @@ import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { Button, IconButton, Stack } from "@mui/material";
-import generateUniqueId from "../../utility/UnipueId";
+import generateUniqueId from "../../utils/UnipueId";
 import { Add, AddCircle, Remove, RemoveCircle } from "@mui/icons-material";
+import AddButton from "../common/AddButton";
+import RemoveButton from "../common/RemoveButton";
+import SelectBoxSerch from "../common/SelectBoxSerch";
+import GetKintoneFields from "../../services/GetKintoneData";
 
 const Conditions = ({ parentId, updateTableData, conditionConfig }) => {
-  const initData = [
+  const fieldsData = GetKintoneFields();
+
+  const newRow = [
     {
       id: generateUniqueId(),
-      fieldName: "",
+      fieldName: {
+        fieldId: "",
+        fieldCode: "",
+        label: "",
+      },
       fieldValue: "",
     },
   ];
-  const [conditionData, setConditionData] = useState(conditionConfig || initData);
+  const [conditionData, setConditionData] = useState(conditionConfig || newRow);
 
   useEffect(() => {
     console.log(conditionData);
@@ -21,12 +31,6 @@ const Conditions = ({ parentId, updateTableData, conditionConfig }) => {
   }, [conditionData]);
 
   const addRow = (index) => {
-    const newRow = {
-      id: generateUniqueId(),
-      fieldName: "",
-      fieldValue: "",
-    };
-
     // 状態を更新して新しい行を追加
     setConditionData((prevConditionData) => {
       const newData = [...prevConditionData];
@@ -59,6 +63,19 @@ const Conditions = ({ parentId, updateTableData, conditionConfig }) => {
     });
   };
 
+  const selectChange = (newValue, stackId) => {
+    // 新しい値を取得
+    console.log("selectChange", newValue);
+    // 状態を更新
+    setConditionData((prevTargetData) => {
+      return prevTargetData.map((data) => {
+        if (data.id === stackId) {
+          return { ...data, fieldName: newValue };
+        }
+        return data;
+      });
+    });
+  };
   return (
     <Box
       component="form"
@@ -73,17 +90,14 @@ const Conditions = ({ parentId, updateTableData, conditionConfig }) => {
     >
       {conditionData.map((data, index) => (
         <Stack key={data.id} direction="row" alignItems="center">
-          <TextField
-            sx={{
-              width: 220,
-              padding: 1,
-            }}
-            id="field-name"
-            label="フィールド名"
-            size="small"
+          <SelectBoxSerch
+            id={"fieldName"}
+            label={"フィールド名"}
             value={data.fieldName}
-            onChange={(e) => handleTextChange(e, data.id)}
-          />
+            options={fieldsData}
+            stackId={data.id}
+            onChange={selectChange}
+          ></SelectBoxSerch>
           <TextField
             sx={{
               width: 160,
@@ -95,24 +109,8 @@ const Conditions = ({ parentId, updateTableData, conditionConfig }) => {
             value={data.fieldValue}
             onChange={(e) => handleTextChange(e, data.id)}
           />
-          <IconButton
-            sx={{ paddingRight: 1 }}
-            aria-label="delete"
-            fontSize="small"
-            color="primary"
-            onClick={() => addRow(index)}
-          >
-            <AddCircle fontSize="inherit" />
-          </IconButton>
-          <IconButton
-            sx={{ padding: 0 }}
-            aria-label="delete"
-            fontSize="small"
-            color="secondary"
-            onClick={() => removeRow(data.id)}
-          >
-            <RemoveCircle fontSize="inherit" />
-          </IconButton>
+          <AddButton onClick={() => addRow(index)}></AddButton>
+          {conditionData.length > 1 && <RemoveButton onClick={() => removeRow(data.id)}></RemoveButton>}
         </Stack>
       ))}
     </Box>

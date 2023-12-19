@@ -5,8 +5,8 @@ module.exports = {
   // webpack でバンドルする js のファイルを指定する
   mode: "development",
   entry: {
-    desktop: "./src/desktop/index.js",
-    config: "./src/config/index.js",
+    desktop: "./src/pages/desktop/index.js",
+    config: "./src/pages/config/index.jsx",
   },
   output: {
     path: path.resolve(__dirname, "plugin", "js"),
@@ -56,7 +56,7 @@ module.exports = {
   },
   // devtool: "eval-source-map",
   resolve: {
-    extensions: [".ts", ".tsx", ".js", "jsx", ".json"],
+    extensions: [".ts", ".tsx", ".js", ".jsx", ".json"],
   },
   target: "web",
   // プラグインのパッケージングに必要なファイルのパスを設定する

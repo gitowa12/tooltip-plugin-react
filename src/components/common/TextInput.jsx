@@ -1,7 +1,7 @@
 import { FormControl, TextField } from "@mui/material";
 import React from "react";
 
-const UrlInput = ({ handleChange, stackId, value }) => {
+const TextInput = ({ id, label, value, onChange }) => {
   return (
     <FormControl>
       <TextField
@@ -9,14 +9,14 @@ const UrlInput = ({ handleChange, stackId, value }) => {
           width: 240,
           padding: 1,
         }}
-        id="url"
-        label="URL"
+        id={id}
+        label={label}
         size="small"
         value={value}
-        onChange={(e) => handleChange(e, stackId, "url")}
+        onChange={onChange}
       />
     </FormControl>
   );
 };
 
-export default UrlInput;
+export default TextInput;

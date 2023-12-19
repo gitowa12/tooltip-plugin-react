@@ -12,9 +12,11 @@ jQuery.noConflict();
   function tooltip(field_id, message, display, url) {
     //フィールド名とサブテーブル名とスペースフィールドの要素を取得
     const parentElement =
-      document.querySelector(`.label-${field_id}`) || document.querySelector(`.subtable-row-label-${field_id}`);
-    // kintone.app.record.getSpaceElement(field_id);
+      document.querySelector(`.label-${field_id}`) ||
+      document.querySelector(`.subtable-row-label-${field_id}`) ||
+      kintone.app.record.getSpaceElement(field_id);
 
+    console.log(parentElement);
     if (display === "tooltip") {
       //ツールチップ要素を作成
       const obj = document.createElement("div");
@@ -138,10 +140,10 @@ jQuery.noConflict();
     const obj = JSON.parse(CONFIG[key]);
     const conditionData = obj.conditionData || [];
     conditionData.forEach((data) => {
-      conditionAllay.add(data.fieldName);
+      conditionAllay.add(data.fieldName.fieldCode);
     });
   });
-  console.log(conditionAllay);
+  console.log("conditionAllay", conditionAllay);
 
   const changeEvents = [];
   conditionAllay.forEach((el) => {
@@ -158,14 +160,16 @@ jQuery.noConflict();
       if (Object.keys(CONFIG).length) {
         Object.keys(CONFIG).forEach((key) => {
           const obj = JSON.parse(CONFIG[key]);
-          const conditionData = obj.conditionData;
           console.log(obj);
+          const conditionData = obj.conditionData;
+          console.log(conditionData);
+
           let conditionBoolean = true;
           conditionData.forEach((data) => {
-            const conditionField = data.fieldName;
-            if (conditionField !== "") {
-              console.log(record[conditionField].value);
-              if (record[conditionField].value !== data.fieldValue) {
+            const fieldCode = data.fieldName.fieldCode;
+            if (fieldCode !== "") {
+              console.log(record[fieldCode].value);
+              if (record[fieldCode].value !== data.fieldValue) {
                 conditionBoolean = false;
               }
             }
@@ -174,7 +178,7 @@ jQuery.noConflict();
           if (conditionBoolean) {
             const targetData = obj.targetData;
             targetData.forEach((data) => {
-              const field_id = data.fieldName;
+              const field_id = data.fieldName.fieldId;
               const message = data.message;
               const display = data.display;
               const url = data.url;

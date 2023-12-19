@@ -7,11 +7,11 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import generateUniqueId from "../utility/UnipueId";
+import generateUniqueId from "../utils/UnipueId";
 import Conditions from "./Condition/Conditions";
 import Targets from "./Target/Targets";
 
-const TableComponent = ({ beforeConfig }) => {
+const ConfigTable = ({ beforeConfig }) => {
   // テーブルのデータを管理する状態
   // console.log("config", config);
   // console.log(Object.values(config));
@@ -23,33 +23,40 @@ const TableComponent = ({ beforeConfig }) => {
   }, [tableData]);
 
   // 新しい行を追加する関数
-  const addRow = (index) => {
+  const addRow = () => {
     const newRow = {
       id: generateUniqueId(), // 新しい行のIDを生成
-      name: `Row ${tableData.length + 1}`, // 新しい行の名前を生成
       conditionData: [
         {
           id: generateUniqueId(),
-          fieldName: "",
+          fieldName: {
+            fieldId: "",
+            fieldCode: "",
+            label: "",
+          },
           fieldValue: "",
         },
       ],
       targetData: [
         {
           id: generateUniqueId(),
-          fieldName: "",
+          fieldName: {
+            fieldId: "",
+            fieldCode: "",
+            label: "",
+          },
           display: "",
           massage: "",
           url: "",
         },
       ],
     };
-    setTableData((prevTableData) => {
-      const newData = [...prevTableData];
-      newData.splice(index + 1, 0, newRow);
-      return newData;
-    });
-    // setTableData([...tableData, newRow]);
+    // setTableData((prevTableData) => {
+    //   const newData = [...prevTableData];
+    //   newData.splice(index + 1, 0, newRow);
+    //   return newData;
+    // });
+    setTableData([...tableData, newRow]);
   };
 
   const removeRow = (idToRemove) => {
@@ -90,6 +97,9 @@ const TableComponent = ({ beforeConfig }) => {
   return (
     <>
       <TableContainer component={Paper}>
+        <Button variant="contained" onClick={() => addRow()}>
+          追加
+        </Button>
         <Table size="small" aria-label="a dense table">
           <TableHead>
             <TableRow>
@@ -113,9 +123,6 @@ const TableComponent = ({ beforeConfig }) => {
                   <Targets parentId={data.id} updateTableData={updateTableData} beforeData={data.targetData} />
                 </TableCell>
                 <TableCell>
-                  <Button variant="contained" onClick={() => addRow(index)}>
-                    追加
-                  </Button>
                   <Button variant="contained" onClick={() => removeRow(data.id)}>
                     削除
                   </Button>
@@ -135,4 +142,4 @@ const TableComponent = ({ beforeConfig }) => {
   );
 };
 
-export default TableComponent;
+export default ConfigTable;
