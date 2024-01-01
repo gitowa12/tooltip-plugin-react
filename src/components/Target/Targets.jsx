@@ -1,32 +1,33 @@
 import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
-import { Stack } from "@mui/material";
+import { Stack, TextField, TextareaAutosize } from "@mui/material";
 import generateUniqueId from "../../utils/UnipueId";
 import AddButton from "../common/AddButton";
 import RemoveButton from "../common/RemoveButton";
-import TextInput from "../common/TextInput";
 import SelectBox from "../common/SelectBox";
 import SelectBoxSerch from "../common/SelectBoxSerch";
 import GetKintoneFields from "../../services/GetKintoneData";
+import TextArea from "../common/TextArea";
 
 const Targets = ({ parentId, updateTableData, beforeData }) => {
   const fieldsData = GetKintoneFields();
-  console.log(fieldsData);
-
-  const initData = [
-    {
+  /* console.log(fieldsData); */
+  const createRow = () => {
+    const obj = {
       id: generateUniqueId(),
       fieldName: {
-        id: "",
+        fieldId: "",
+        fieldCode: "",
         label: "",
       },
       display: "",
       message: "",
       url: "",
-    },
-  ];
+    };
+    return obj;
+  };
 
-  const [targetData, setTargetData] = useState(beforeData || initData);
+  const [targetData, setTargetData] = useState(beforeData || [createRow()]);
 
   useEffect(() => {
     console.log(targetData);
@@ -34,17 +35,7 @@ const Targets = ({ parentId, updateTableData, beforeData }) => {
   }, [targetData]);
 
   const addRow = (index) => {
-    const newRow = {
-      id: generateUniqueId(),
-      fieldName: {
-        id: "",
-        label: "",
-      },
-      display: "",
-      message: "",
-      url: "",
-    };
-
+    const newRow = createRow();
     setTargetData((prevTargetData) => {
       const newData = [...prevTargetData];
       newData.splice(index + 1, 0, newRow);
@@ -57,24 +48,21 @@ const Targets = ({ parentId, updateTableData, beforeData }) => {
     setTargetData(updatedData);
   };
 
-  const handleChange = (e, stackId, type) => {
+  const handleChange = (e, stackId) => {
     // 新しい値を取得
     const newValue = e.target.value;
-    console.log("handleChange", e, type);
+    // console.log("handleChange", e);
     // 状態を更新
     setTargetData((prevTargetData) => {
       return prevTargetData.map((data) => {
         if (data.id === stackId) {
-          if (type === "fieldName") {
-            return { ...data, fieldName: newValue };
-          }
-          if (type === "display") {
+          if (e.target.id === "display") {
             return { ...data, display: newValue };
           }
-          if (type === "message") {
+          if (e.target.id === "message") {
             return { ...data, message: newValue };
           }
-          if (type === "url") {
+          if (e.target.id === "url") {
             return { ...data, url: newValue };
           }
         }
@@ -83,8 +71,7 @@ const Targets = ({ parentId, updateTableData, beforeData }) => {
     });
   };
   const selectChange = (newValue, stackId) => {
-    // 新しい値を取得
-    console.log("selectChange", newValue);
+    // console.log("selectChange", newValue);
     // 状態を更新
     setTargetData((prevTargetData) => {
       return prevTargetData.map((data) => {
@@ -116,34 +103,42 @@ const Targets = ({ parentId, updateTableData, beforeData }) => {
       {targetData.map((data, index) => (
         <Stack key={data.id} direction="row" alignItems="center">
           <SelectBoxSerch
-            id={"fieldName"}
-            label={"フィールド名"}
+            id="fieldName"
+            label="フィールド名"
             value={data.fieldName}
             options={fieldsData}
             stackId={data.id}
             onChange={selectChange}
           ></SelectBoxSerch>
           <SelectBox
-            id={"display"}
-            lebel={"表示方法"}
+            id="display"
+            label="表示方法"
             value={data.display}
-            onChange={(e) => handleChange(e, data.id, "display")}
+            onChange={(e) => handleChange(e, data.id)}
             options={displayOptions}
           ></SelectBox>
-          <TextInput
+          <TextArea id="message" label="メッセージ" sx={{ width: 160, padding: 1 }}></TextArea>
+          <TextareaAutosize></TextareaAutosize>
+          <TextField
+            sx={{ width: 160, margin: 1 }}
+            size={"small"}
             id={"message"}
             label={"メッセージ"}
             value={data.message}
-            onChange={(e) => handleChange(e, data.id, "message")}
-          ></TextInput>
-          <TextInput
+            onChange={(e) => handleChange(e, data.id)}
+          ></TextField>
+          <TextField
+            sx={{ width: 160, margin: 1 }}
+            size={"small"}
             id={"url"}
             label={"URL"}
             value={data.url}
-            onChange={(e) => handleChange(e, data.id, "url")}
-          ></TextInput>
+            onChange={(e) => handleChange(e, data.id)}
+          ></TextField>
           <AddButton onClick={() => addRow(index)}></AddButton>
-          {targetData.length > 1 && <RemoveButton onClick={() => removeRow(data.id)}></RemoveButton>}
+          {targetData.length > 1 && (
+            <RemoveButton onClick={() => removeRow(data.id)}></RemoveButton>
+          )}
         </Stack>
       ))}
     </Box>

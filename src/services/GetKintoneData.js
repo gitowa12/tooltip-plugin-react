@@ -1,14 +1,15 @@
 import generateUniqueId from "../utils/UnipueId";
 
 const GetKintoneFields = () => {
+  //フィールドとテーブルのデータを取得
   const mainFields = Object.values(cybozu.data.page.FORM_DATA.schema.table.fieldList);
   const subTables = Object.values(cybozu.data.page.FORM_DATA.schema.subTable);
-  console.log("mainFields", mainFields);
-  console.log("subTables", subTables);
+  // console.log("mainFields", mainFields);
+  // console.log("subTables", subTables);
 
   //スペースフィールドのフィールドコードを取得
   const layoutAllay = JSON.parse(cybozu.data.page.FORM_DATA.layout);
-  console.log("layoutAllay", layoutAllay);
+  // console.log("layoutAllay", layoutAllay);
   const spaceFields = [];
   layoutAllay.forEach((el) => {
     el.controlList.forEach((el) => {
@@ -17,15 +18,18 @@ const GetKintoneFields = () => {
       }
     });
   });
-  console.log("spaceFields", spaceFields);
+  // console.log("spaceFields", spaceFields);
 
+  //セレクトボックスのリスト用に整形する
   const conbinedData = [...mainFields, ...subTables, ...spaceFields];
+  //初期値の追加
   const fieldsData = [];
   fieldsData.push({
     fieldId: "",
     fieldCode: "",
     label: "",
   });
+  //通常のフィールドとスペースフィールドでデータが異なるため、処理を振り分ける
   conbinedData.forEach((data) => {
     if (data.label !== undefined) {
       fieldsData.push({

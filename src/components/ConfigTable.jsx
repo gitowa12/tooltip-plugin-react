@@ -26,36 +26,9 @@ const ConfigTable = ({ beforeConfig }) => {
   const addRow = () => {
     const newRow = {
       id: generateUniqueId(), // 新しい行のIDを生成
-      conditionData: [
-        {
-          id: generateUniqueId(),
-          fieldName: {
-            fieldId: "",
-            fieldCode: "",
-            label: "",
-          },
-          fieldValue: "",
-        },
-      ],
-      targetData: [
-        {
-          id: generateUniqueId(),
-          fieldName: {
-            fieldId: "",
-            fieldCode: "",
-            label: "",
-          },
-          display: "",
-          massage: "",
-          url: "",
-        },
-      ],
+      conditionData: "",
+      targetData: "",
     };
-    // setTableData((prevTableData) => {
-    //   const newData = [...prevTableData];
-    //   newData.splice(index + 1, 0, newRow);
-    //   return newData;
-    // });
     setTableData([...tableData, newRow]);
   };
 
@@ -103,7 +76,6 @@ const ConfigTable = ({ beforeConfig }) => {
         <Table size="small" aria-label="a dense table">
           <TableHead>
             <TableRow>
-              {/* <TableCell>ID</TableCell> */}
               <TableCell>条件</TableCell>
               <TableCell>対象のフィールド</TableCell>
               <TableCell></TableCell>
@@ -116,11 +88,15 @@ const ConfigTable = ({ beforeConfig }) => {
                   <Conditions
                     parentId={data.id}
                     updateTableData={updateTableData}
-                    conditionConfig={data.conditionData}
+                    beforeData={data.conditionData}
                   />
                 </TableCell>
                 <TableCell>
-                  <Targets parentId={data.id} updateTableData={updateTableData} beforeData={data.targetData} />
+                  <Targets
+                    parentId={data.id}
+                    updateTableData={updateTableData}
+                    beforeData={data.targetData}
+                  />
                 </TableCell>
                 <TableCell>
                   <Button variant="contained" onClick={() => removeRow(data.id)}>

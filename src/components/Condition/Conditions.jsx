@@ -9,11 +9,11 @@ import RemoveButton from "../common/RemoveButton";
 import SelectBoxSerch from "../common/SelectBoxSerch";
 import GetKintoneFields from "../../services/GetKintoneData";
 
-const Conditions = ({ parentId, updateTableData, conditionConfig }) => {
+const Conditions = ({ parentId, updateTableData, beforeData }) => {
   const fieldsData = GetKintoneFields();
 
-  const newRow = [
-    {
+  const createRow = () => {
+    const obj = {
       id: generateUniqueId(),
       fieldName: {
         fieldId: "",
@@ -21,16 +21,19 @@ const Conditions = ({ parentId, updateTableData, conditionConfig }) => {
         label: "",
       },
       fieldValue: "",
-    },
-  ];
-  const [conditionData, setConditionData] = useState(conditionConfig || newRow);
+    };
+    return obj;
+  };
+
+  const [conditionData, setConditionData] = useState(beforeData || [createRow()]);
 
   useEffect(() => {
-    console.log(conditionData);
+    // console.log(conditionData);
     updateTableData(parentId, conditionData, "conditions");
   }, [conditionData]);
 
   const addRow = (index) => {
+    const newRow = createRow();
     // 状態を更新して新しい行を追加
     setConditionData((prevConditionData) => {
       const newData = [...prevConditionData];
@@ -65,7 +68,7 @@ const Conditions = ({ parentId, updateTableData, conditionConfig }) => {
 
   const selectChange = (newValue, stackId) => {
     // 新しい値を取得
-    console.log("selectChange", newValue);
+    // console.log("selectChange", newValue);
     // 状態を更新
     setConditionData((prevTargetData) => {
       return prevTargetData.map((data) => {
@@ -91,7 +94,7 @@ const Conditions = ({ parentId, updateTableData, conditionConfig }) => {
       {conditionData.map((data, index) => (
         <Stack key={data.id} direction="row" alignItems="center">
           <SelectBoxSerch
-            id={"fieldName"}
+            id={"field-Name"}
             label={"フィールド名"}
             value={data.fieldName}
             options={fieldsData}
@@ -101,7 +104,7 @@ const Conditions = ({ parentId, updateTableData, conditionConfig }) => {
           <TextField
             sx={{
               width: 160,
-              padding: 1,
+              margin: 1,
             }}
             id="field-value"
             label="値"
@@ -110,7 +113,9 @@ const Conditions = ({ parentId, updateTableData, conditionConfig }) => {
             onChange={(e) => handleTextChange(e, data.id)}
           />
           <AddButton onClick={() => addRow(index)}></AddButton>
-          {conditionData.length > 1 && <RemoveButton onClick={() => removeRow(data.id)}></RemoveButton>}
+          {conditionData.length > 1 && (
+            <RemoveButton onClick={() => removeRow(data.id)}></RemoveButton>
+          )}
         </Stack>
       ))}
     </Box>

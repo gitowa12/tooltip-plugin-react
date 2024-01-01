@@ -1,4 +1,4 @@
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import React from "react";
 
 const SelectBox = ({ id, value, label, onChange, options }) => {
@@ -9,14 +9,19 @@ const SelectBox = ({ id, value, label, onChange, options }) => {
       </MenuItem>
     );
   });
+
   // console.log(menuItems);
   return (
-    <FormControl size="small" sx={{ width: 180 }}>
-      <InputLabel id={id}>表示方法</InputLabel>
-      <Select labelId={id} id={id} value={value} label={label} onChange={onChange}>
-        {menuItems}
-      </Select>
-    </FormControl>
+    <TextField
+      id={id}
+      select
+      label={label}
+      value={value}
+      size="small"
+      sx={{ width: 180, margin: 1 }}
+    >
+      {menuItems}
+    </TextField>
   );
 };
 

@@ -104,7 +104,9 @@ jQuery.noConflict();
   }
 
   function deleteTooltips() {
-    const tooltipElements = document.querySelectorAll(".help-tooltip, .help-alert, .help-subWindow, .help-link");
+    const tooltipElements = document.querySelectorAll(
+      ".help-tooltip, .help-alert, .help-subWindow, .help-link"
+    );
     tooltipElements.forEach((el) => {
       el.remove();
     });
@@ -151,43 +153,46 @@ jQuery.noConflict();
     changeEvents.push(`app.record.edit.change.${el}`);
   });
 
-  kintone.events.on(["app.record.detail.show", "app.record.create.show", "app.record.edit.show", changeEvents], (e) => {
-    deleteTooltips();
-    const record = e.record;
+  kintone.events.on(
+    ["app.record.detail.show", "app.record.create.show", "app.record.edit.show", changeEvents],
+    (e) => {
+      deleteTooltips();
+      const record = e.record;
 
-    // console.log(record);
-    if (CONFIG) {
-      if (Object.keys(CONFIG).length) {
-        Object.keys(CONFIG).forEach((key) => {
-          const obj = JSON.parse(CONFIG[key]);
-          console.log(obj);
-          const conditionData = obj.conditionData;
-          console.log(conditionData);
+      // console.log(record);
+      if (CONFIG) {
+        if (Object.keys(CONFIG).length) {
+          Object.keys(CONFIG).forEach((key) => {
+            const obj = JSON.parse(CONFIG[key]);
+            console.log(obj);
+            const conditionData = obj.conditionData;
+            console.log(conditionData);
 
-          let conditionBoolean = true;
-          conditionData.forEach((data) => {
-            const fieldCode = data.fieldName.fieldCode;
-            if (fieldCode !== "") {
-              console.log(record[fieldCode].value);
-              if (record[fieldCode].value !== data.fieldValue) {
-                conditionBoolean = false;
+            let conditionBoolean = true;
+            conditionData.forEach((data) => {
+              const fieldCode = data.fieldName.fieldCode;
+              if (fieldCode !== "") {
+                console.log(record[fieldCode].value);
+                if (record[fieldCode].value !== data.fieldValue) {
+                  conditionBoolean = false;
+                }
               }
+            });
+
+            if (conditionBoolean) {
+              const targetData = obj.targetData;
+              targetData.forEach((data) => {
+                const field_id = data.fieldName.fieldId;
+                const message = data.message;
+                const display = data.display;
+                const url = data.url;
+                tooltip(field_id, message, display, url);
+              });
             }
           });
-
-          if (conditionBoolean) {
-            const targetData = obj.targetData;
-            targetData.forEach((data) => {
-              const field_id = data.fieldName.fieldId;
-              const message = data.message;
-              const display = data.display;
-              const url = data.url;
-              tooltip(field_id, message, display, url);
-            });
-          }
-        });
+        }
       }
+      return e;
     }
-    return e;
-  });
+  );
 })(jQuery, kintone.$PLUGIN_ID);
