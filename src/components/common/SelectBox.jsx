@@ -1,28 +1,18 @@
-import { FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
-import React from "react";
+import * as React from "react";
+import styles from "../../css/SelectBox.module.css";
 
-const SelectBox = ({ id, value, label, onChange, options }) => {
-  const menuItems = (options || []).map((option) => {
-    return (
-      <MenuItem key={option.value} value={option.value}>
-        {option.label}
-      </MenuItem>
-    );
-  });
-
-  // console.log(menuItems);
+export default function SelectBox({ id, value, label, onChange, options }) {
+  const menuItems = (options || []).map((option) => (
+    <option key={option.value} value={option.value}>
+      {option.label}
+    </option>
+  ));
   return (
-    <TextField
-      id={id}
-      select
-      label={label}
-      value={value}
-      size="small"
-      sx={{ width: 180, margin: 1 }}
-    >
-      {menuItems}
-    </TextField>
+    <div className="container">
+      <label className={styles.label}>{label}</label>
+      <select id={id} className={styles.selectBox} value={value} onChange={onChange}>
+        {menuItems}
+      </select>
+    </div>
   );
-};
-
-export default SelectBox;
+}

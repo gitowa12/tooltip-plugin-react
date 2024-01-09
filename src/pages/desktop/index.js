@@ -166,21 +166,42 @@ jQuery.noConflict();
             const obj = JSON.parse(CONFIG[key]);
             console.log(obj);
             const conditionData = obj.conditionData;
+            const conditionSwitch = obj.conditionSwitch;
             console.log(conditionData);
 
             let conditionBoolean = true;
-            conditionData.forEach((data) => {
-              const fieldCode = data.fieldName.fieldCode;
-              if (fieldCode !== "") {
-                console.log(record[fieldCode].value);
-                if (record[fieldCode].value !== data.fieldValue) {
-                  conditionBoolean = false;
+            if (conditionSwitch === "and") {
+              conditionData.forEach((data) => {
+                const fieldCode = data.fieldName.fieldCode;
+                if (fieldCode !== "") {
+                  console.log(record[fieldCode].value);
+                  if (record[fieldCode].value !== data.fieldValue) {
+                    conditionBoolean = false;
+                    console.log("and条件でfalseにしたよ");
+                  }
+                }
+              });
+            }
+            if (conditionSwitch === "or") {
+              for (let i = 0; i < conditionData.length; i++) {
+                const fieldCode = conditionData[i].fieldName.fieldCode;
+                if (fieldCode !== "") {
+                  console.log(record[fieldCode].value);
+                  if (record[fieldCode].value === conditionData[i].fieldValue) {
+                    conditionBoolean = true;
+                    console.log("or条件でtrueにしたよ");
+                    break;
+                  } else {
+                    conditionBoolean = false;
+                    console.log("or条件でfalseにしたよ");
+                  }
                 }
               }
-            });
+            }
 
             if (conditionBoolean) {
               const targetData = obj.targetData;
+              console.log(targetData);
               targetData.forEach((data) => {
                 const field_id = data.fieldName.fieldId;
                 const message = data.message;

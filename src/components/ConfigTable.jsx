@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button } from "@mui/material";
+import { Box, Button, Stack, createFilterOptions } from "@mui/material";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -10,6 +10,7 @@ import Paper from "@mui/material/Paper";
 import generateUniqueId from "../utils/UnipueId";
 import Conditions from "./Condition/Conditions";
 import Targets from "./Target/Targets";
+import RadioButton from "./common/RadioButton";
 
 const ConfigTable = ({ beforeConfig }) => {
   // テーブルのデータを管理する状態
@@ -17,9 +18,8 @@ const ConfigTable = ({ beforeConfig }) => {
   // console.log(Object.values(config));
 
   const [tableData, setTableData] = useState(beforeConfig);
-
   useEffect(() => {
-    console.log(tableData);
+    console.log("tableData", tableData);
   }, [tableData]);
 
   // 新しい行を追加する関数
@@ -27,6 +27,7 @@ const ConfigTable = ({ beforeConfig }) => {
     const newRow = {
       id: generateUniqueId(), // 新しい行のIDを生成
       conditionData: "",
+      conditionSwitch: "and",
       targetData: "",
     };
     setTableData([...tableData, newRow]);
@@ -56,6 +57,9 @@ const ConfigTable = ({ beforeConfig }) => {
         if (category === "conditions") {
           return { ...row, conditionData: newData };
         }
+        if (category === "conditionSwicth") {
+          return { ...row, conditionSwitch: newData };
+        }
         if (category === "targets") {
           return { ...row, targetData: newData };
         }
@@ -69,10 +73,10 @@ const ConfigTable = ({ beforeConfig }) => {
 
   return (
     <>
-      <TableContainer component={Paper}>
-        <Button variant="contained" onClick={() => addRow()}>
-          追加
-        </Button>
+      <Button variant="contained" onClick={() => addRow()} sx={{ m: 1 }}>
+        行の追加
+      </Button>
+      <TableContainer component={Paper} sx={{ width: "fit-content", minWidth: "1895px" }}>
         <Table size="small" aria-label="a dense table">
           <TableHead>
             <TableRow>
@@ -84,21 +88,30 @@ const ConfigTable = ({ beforeConfig }) => {
           <TableBody>
             {tableData.map((data, index) => (
               <TableRow key={data.id}>
-                <TableCell component="th" scope="row" sx={{ padding: 2 }}>
+                <TableCell sx={{ verticalAlign: "top", padding: 2 }}>
                   <Conditions
                     parentId={data.id}
                     updateTableData={updateTableData}
                     beforeData={data.conditionData}
                   />
+                  <RadioButton
+                    options={[
+                      { value: "and", label: "すべての条件を満たす" },
+                      { value: "or", label: "いずれかの条件を満たす" },
+                    ]}
+                    parentId={data.id}
+                    onChange={updateTableData}
+                    beforeData={data.conditionSwitch}
+                  ></RadioButton>
                 </TableCell>
-                <TableCell>
+                <TableCell sx={{ verticalAlign: "top", padding: 2 }}>
                   <Targets
                     parentId={data.id}
                     updateTableData={updateTableData}
                     beforeData={data.targetData}
                   />
                 </TableCell>
-                <TableCell>
+                <TableCell sx={{ verticalAlign: "top", padding: 2 }}>
                   <Button variant="contained" onClick={() => removeRow(data.id)}>
                     削除
                   </Button>
@@ -108,12 +121,20 @@ const ConfigTable = ({ beforeConfig }) => {
           </TableBody>
         </Table>
       </TableContainer>
-      <Button variant="contained" onClick={handleSave}>
-        保存
-      </Button>
-      <Button variant="contained" onClick={() => history.back()}>
-        キャンセル
-      </Button>
+      <Stack
+        sx={{ m: 1 }}
+        direction="row"
+        justifyContent="flex-start"
+        alignItems="center"
+        spacing={1}
+      >
+        <Button variant="contained" onClick={handleSave} sx={{ width: "110px" }}>
+          保存
+        </Button>
+        <Button variant="outlined" onClick={() => history.back()} sx={{ width: "110px" }}>
+          キャンセル
+        </Button>
+      </Stack>
     </>
   );
 };

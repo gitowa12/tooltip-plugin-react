@@ -6,8 +6,11 @@ import generateUniqueId from "../../utils/UnipueId";
 import { Add, AddCircle, Remove, RemoveCircle } from "@mui/icons-material";
 import AddButton from "../common/AddButton";
 import RemoveButton from "../common/RemoveButton";
-import SelectBoxSerch from "../common/SelectBoxSerch";
 import GetKintoneFields from "../../services/GetKintoneData";
+import AutoComplete from "../common/AutoComplete";
+import Input from "../common/Input";
+import { FormControl, FormLabel, Radio, RadioGroup } from "@mui/joy";
+import RadioButton from "../common/RadioButton";
 
 const Conditions = ({ parentId, updateTableData, beforeData }) => {
   const fieldsData = GetKintoneFields();
@@ -83,7 +86,8 @@ const Conditions = ({ parentId, updateTableData, beforeData }) => {
     <Box
       component="form"
       sx={{
-        width: 600,
+        width: "fit-content",
+        minWidth: "583px",
         boxShadow: 2,
         borderRadius: 0,
         padding: 1,
@@ -92,30 +96,29 @@ const Conditions = ({ parentId, updateTableData, beforeData }) => {
       autoComplete="off"
     >
       {conditionData.map((data, index) => (
-        <Stack key={data.id} direction="row" alignItems="center">
-          <SelectBoxSerch
-            id={"field-Name"}
-            label={"フィールド名"}
+        <Stack key={data.id} direction="row" alignItems="flex-start" spacing={1} sx={{ m: 1 }}>
+          <AutoComplete
+            id="field-name"
+            label="フィールド名"
             value={data.fieldName}
             options={fieldsData}
             stackId={data.id}
             onChange={selectChange}
-          ></SelectBoxSerch>
-          <TextField
-            sx={{
-              width: 160,
-              margin: 1,
-            }}
+            placeholder={"常に表示"}
+          ></AutoComplete>
+          <Input
             id="field-value"
             label="値"
             size="small"
             value={data.fieldValue}
             onChange={(e) => handleTextChange(e, data.id)}
-          />
-          <AddButton onClick={() => addRow(index)}></AddButton>
-          {conditionData.length > 1 && (
-            <RemoveButton onClick={() => removeRow(data.id)}></RemoveButton>
-          )}
+          ></Input>
+          <Stack direction="row" alignItems="center">
+            <AddButton onClick={() => addRow(index)}></AddButton>
+            {conditionData.length > 1 && (
+              <RemoveButton onClick={() => removeRow(data.id)}></RemoveButton>
+            )}
+          </Stack>
         </Stack>
       ))}
     </Box>

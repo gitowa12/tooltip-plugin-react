@@ -1,21 +1,18 @@
-import * as React from "react";
-import { TextareaAutosize } from "@mui/base/TextareaAutosize";
-import { styled } from "@mui/system";
-import { FormControl, InputLabel } from "@mui/material";
+import { FormControl } from "@mui/material";
+import React from "react";
+import styles from "../../css/TextArea.module.css";
 
-const TextArea = ({ id, label }) => {
+const TextArea = ({ id, label, value, onChange }) => {
   return (
-    <FormControl>
-      <InputLabel htmlFor={id} shrink>
-        {label}
-      </InputLabel>
-      <TextareaAutosize
+    <div className={styles.container}>
+      <label className={styles.label}>{label}</label>
+      <textarea
         id={id}
-        aria-label="empty textarea"
-        placeholder={`Enter `}
-        // style={{ width: "100%" }}
-      />
-    </FormControl>
+        className={styles.textarea}
+        onChange={onChange}
+        defaultValue={value}
+      ></textarea>
+    </div>
   );
 };
 

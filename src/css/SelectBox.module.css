@@ -1,0 +1,31 @@
+.container {
+}
+
+.label {
+  font-weight: 500;
+  font-size: 0.875rem;
+  margin-bottom: 0.375rem;
+  display: block;
+}
+
+.selectBox {
+  height: 26px;
+  width: 150px;
+  background-color: #fbfcfe;
+  border: 1px solid #cdd7e0;
+  border-radius: 6px;
+  box-shadow: 1px 1px 2px #f0f0f0;
+  /* padding: 3px 5px 0 5px; */
+  /* background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAOpJREFUOE/Fk6FuwzAURc+LzUqmocL+xL4hUchGhiqVrt9QPjAwUNbiwZFJk/wT+4oVBY4NJXdy1ExZa5cEzMx6vudd+z4bE5dN1DMdUJbltfe+lrQAXkIIn5dcVVW1cM6tiqI4eO/fra7rJzNbAjPgVdJjDnIUb4B7Sd9m9hwBO+DWzObAVw4yFgNXQNO27TYConANPOQgKbGkPbDrH/ESpOs6c871tofOkqLrfQih+U0hBZH0YdYfuUmJY+FPjAnIOJBmsB07D4WzOchAkuIzBwP1BEKqc9bBCeTuuH8b2x7fa/oo//tn+gHcxn+x/xiWxwAAAABJRU5ErkJggg==");
+  background-position: right 10px center;
+  background-repeat: no-repeat;
+  background-size: 13px 13px; */
+}
+
+.selectBox:hover {
+  background-color: #f0f4f8;
+  cursor: pointer;
+}
+.selectBox:focus {
+  outline-color: #156ac6;
+}

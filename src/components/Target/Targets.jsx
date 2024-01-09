@@ -5,9 +5,12 @@ import generateUniqueId from "../../utils/UnipueId";
 import AddButton from "../common/AddButton";
 import RemoveButton from "../common/RemoveButton";
 import SelectBox from "../common/SelectBox";
-import SelectBoxSerch from "../common/SelectBoxSerch";
+
 import GetKintoneFields from "../../services/GetKintoneData";
 import TextArea from "../common/TextArea";
+import UnstyledTextareaIntroduction from "../common/TextArea";
+import AutoComplete from "../common/AutoComplete";
+import LabelAndHelperText from "../common/AutoComplete";
 
 const Targets = ({ parentId, updateTableData, beforeData }) => {
   const fieldsData = GetKintoneFields();
@@ -20,7 +23,7 @@ const Targets = ({ parentId, updateTableData, beforeData }) => {
         fieldCode: "",
         label: "",
       },
-      display: "",
+      display: "tooltip",
       message: "",
       url: "",
     };
@@ -30,7 +33,7 @@ const Targets = ({ parentId, updateTableData, beforeData }) => {
   const [targetData, setTargetData] = useState(beforeData || [createRow()]);
 
   useEffect(() => {
-    console.log(targetData);
+    // console.log(targetData);
     updateTableData(parentId, targetData, "targets");
   }, [targetData]);
 
@@ -57,6 +60,7 @@ const Targets = ({ parentId, updateTableData, beforeData }) => {
       return prevTargetData.map((data) => {
         if (data.id === stackId) {
           if (e.target.id === "display") {
+            console.log(newValue);
             return { ...data, display: newValue };
           }
           if (e.target.id === "message") {
@@ -83,16 +87,12 @@ const Targets = ({ parentId, updateTableData, beforeData }) => {
     });
   };
 
-  const displayOptions = [
-    { value: "tooltip", label: "ツールチップ" },
-    { value: "alert", label: "アラート" },
-    { value: "subWindow", label: "サブウィンドウ" },
-  ];
-
   return (
     <Box
       component="form"
       sx={{
+        width: "fit-content",
+        minWidth: "1120px",
         boxShadow: 2,
         borderRadius: 0,
         padding: 1,
@@ -101,44 +101,44 @@ const Targets = ({ parentId, updateTableData, beforeData }) => {
       autoComplete="off"
     >
       {targetData.map((data, index) => (
-        <Stack key={data.id} direction="row" alignItems="center">
-          <SelectBoxSerch
-            id="fieldName"
+        <Stack key={data.id} direction="row" alignItems="flex-start" spacing={1} sx={{ m: 1 }}>
+          <AutoComplete
+            id="field-name"
             label="フィールド名"
             value={data.fieldName}
             options={fieldsData}
             stackId={data.id}
             onChange={selectChange}
-          ></SelectBoxSerch>
+          ></AutoComplete>
           <SelectBox
             id="display"
             label="表示方法"
             value={data.display}
             onChange={(e) => handleChange(e, data.id)}
-            options={displayOptions}
+            options={[
+              { value: "tooltip", label: "ツールチップ" },
+              { value: "alert", label: "アラート" },
+              { value: "subWindow", label: "サブウィンドウ" },
+            ]}
           ></SelectBox>
-          <TextArea id="message" label="メッセージ" sx={{ width: 160, padding: 1 }}></TextArea>
-          <TextareaAutosize></TextareaAutosize>
-          <TextField
-            sx={{ width: 160, margin: 1 }}
-            size={"small"}
+          <TextArea
             id={"message"}
             label={"メッセージ"}
             value={data.message}
             onChange={(e) => handleChange(e, data.id)}
-          ></TextField>
-          <TextField
-            sx={{ width: 160, margin: 1 }}
-            size={"small"}
+          ></TextArea>
+          <TextArea
             id={"url"}
             label={"URL"}
             value={data.url}
             onChange={(e) => handleChange(e, data.id)}
-          ></TextField>
-          <AddButton onClick={() => addRow(index)}></AddButton>
-          {targetData.length > 1 && (
-            <RemoveButton onClick={() => removeRow(data.id)}></RemoveButton>
-          )}
+          ></TextArea>
+          <Stack direction="row" alignItems="center">
+            <AddButton onClick={() => addRow(index)}></AddButton>
+            {targetData.length > 1 && (
+              <RemoveButton onClick={() => removeRow(data.id)}></RemoveButton>
+            )}
+          </Stack>
         </Stack>
       ))}
     </Box>

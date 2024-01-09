@@ -11,11 +11,11 @@
   "icon": "image/icon.png",
   "desktop": {
     "js": ["https://js.cybozu.com/jquery/3.3.1/jquery.min.js", "js/desktop.js"],
-    "css": ["css/51-modern-default.css", "css/desktop.css"]
+    "css": ["css/desktop.css"]
   },
   "config": {
     "html": "html/config.html",
     "js": ["https://js.cybozu.com/jquery/3.3.1/jquery.min.js", "js/config.js"],
-    "css": ["css/51-modern-default.css", "css/config.css"]
+    "css": ["css/config.css"]
   }
 }

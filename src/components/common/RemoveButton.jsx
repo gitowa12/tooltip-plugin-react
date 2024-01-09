@@ -5,10 +5,10 @@ import React from "react";
 const RemoveButton = ({ onClick }) => {
   return (
     <IconButton
-      sx={{ padding: 0 }}
+      sx={{ mt: "10px", padding: "5px" }}
       aria-label="delete"
       fontSize="small"
-      color="secondary"
+      color="error"
       onClick={onClick}
     >
       <RemoveCircle fontSize="inherit" />

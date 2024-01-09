@@ -5,7 +5,7 @@ import React from "react";
 const AddButton = ({ onClick }) => {
   return (
     <IconButton
-      sx={{ paddingRight: 1 }}
+      sx={{ mt: "10px", padding: "5px" }}
       aria-label="add"
       fontSize="small"
       color="primary"
