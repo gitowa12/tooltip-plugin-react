@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 import styles from "../../css/RadioButton.module.css";
 
-const RadioButton = ({ onChange, options, beforeData, parentId }) => {
+const RadioButton = memo(({ onChange, options, beforeData, parentId }) => {
   let checker = "";
   if (beforeData !== "") {
     options.forEach((option) => {
@@ -28,6 +28,6 @@ const RadioButton = ({ onChange, options, beforeData, parentId }) => {
   ));
 
   return <div className={styles.container}>{optionItems}</div>;
-};
+});
 
 export default RadioButton;

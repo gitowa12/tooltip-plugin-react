@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Box, Button, Stack, createFilterOptions } from "@mui/material";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -18,6 +18,7 @@ const ConfigTable = ({ beforeConfig }) => {
   // console.log(Object.values(config));
 
   const [tableData, setTableData] = useState(beforeConfig);
+
   useEffect(() => {
     console.log("tableData", tableData);
   }, [tableData]);
@@ -46,30 +47,76 @@ const ConfigTable = ({ beforeConfig }) => {
     });
     console.log(config);
     // kintoneの設定情報を保存するメソッドを呼び出す
+
     kintone.plugin.app.setConfig(config);
   };
 
-  //子コンポーネントに渡す
-  const updateTableData = (parentId, newData, category) => {
-    // 既存のテーブルデータをコピーして変更
-    const updatedTableData = tableData.map((row) => {
-      if (row.id === parentId) {
-        if (category === "conditions") {
+  // //子コンポーネントに渡す
+  // const updateTableData = useCallback(
+  //   (parentId, newData, category) => {
+  //     // 既存のテーブルデータをコピーして変更
+  //     const updatedTableData = tableData.map((row) => {
+  //       if (row.id === parentId) {
+  //         if (category === "conditions") {
+  //           return { ...row, conditionData: newData };
+  //         }
+  //         if (category === "conditionSwicth") {
+  //           return { ...row, conditionSwitch: newData };
+  //         }
+  //         if (category === "targets") {
+  //           return { ...row, targetData: newData };
+  //         }
+  //       }
+  //       return row;
+  //     });
+
+  //     // 更新されたデータをセット
+  //     setTableData(updatedTableData);
+  //   },
+  //   [tableData]
+  // );
+
+  const updateConditionData = useCallback(
+    (parentId, newData) => {
+      // 既存のテーブルデータをコピーして変更
+      const updatedTableData = tableData.map((row) => {
+        if (row.id === parentId) {
           return { ...row, conditionData: newData };
         }
-        if (category === "conditionSwicth") {
+        return row;
+      });
+      setTableData(updatedTableData);
+    },
+    [tableData]
+  );
+
+  const updateConditionSwitchData = useCallback(
+    (parentId, newData) => {
+      // 既存のテーブルデータをコピーして変更
+      const updatedTableData = tableData.map((row) => {
+        if (row.id === parentId) {
           return { ...row, conditionSwitch: newData };
         }
-        if (category === "targets") {
+        return row;
+      });
+      setTableData(updatedTableData);
+    },
+    [tableData]
+  );
+
+  const updateTargetData = useCallback(
+    (parentId, newData) => {
+      // 既存のテーブルデータをコピーして変更
+      const updatedTableData = tableData.map((row) => {
+        if (row.id === parentId) {
           return { ...row, targetData: newData };
         }
-      }
-      return row;
-    });
-
-    // 更新されたデータをセット
-    setTableData(updatedTableData);
-  };
+        return row;
+      });
+      setTableData(updatedTableData);
+    },
+    [tableData]
+  );
 
   return (
     <>
@@ -91,7 +138,7 @@ const ConfigTable = ({ beforeConfig }) => {
                 <TableCell sx={{ verticalAlign: "top", padding: 2 }}>
                   <Conditions
                     parentId={data.id}
-                    updateTableData={updateTableData}
+                    updateTableData={updateConditionData}
                     beforeData={data.conditionData}
                   />
                   <RadioButton
@@ -100,14 +147,14 @@ const ConfigTable = ({ beforeConfig }) => {
                       { value: "or", label: "いずれかの条件を満たす" },
                     ]}
                     parentId={data.id}
-                    onChange={updateTableData}
+                    onChange={updateConditionSwitchData}
                     beforeData={data.conditionSwitch}
                   ></RadioButton>
                 </TableCell>
                 <TableCell sx={{ verticalAlign: "top", padding: 2 }}>
                   <Targets
                     parentId={data.id}
-                    updateTableData={updateTableData}
+                    updateTableData={updateTargetData}
                     beforeData={data.targetData}
                   />
                 </TableCell>

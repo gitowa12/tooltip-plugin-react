@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { memo, useCallback, useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import { Stack, TextField, TextareaAutosize } from "@mui/material";
 import generateUniqueId from "../../utils/UnipueId";
@@ -12,8 +12,7 @@ import UnstyledTextareaIntroduction from "../common/TextArea";
 import AutoComplete from "../common/AutoComplete";
 import LabelAndHelperText from "../common/AutoComplete";
 
-const Targets = ({ parentId, updateTableData, beforeData }) => {
-  const fieldsData = GetKintoneFields();
+const Targets = memo(({ parentId, updateTableData, beforeData }) => {
   /* console.log(fieldsData); */
   const createRow = () => {
     const obj = {
@@ -37,21 +36,21 @@ const Targets = ({ parentId, updateTableData, beforeData }) => {
     updateTableData(parentId, targetData, "targets");
   }, [targetData]);
 
-  const addRow = (index) => {
+  const addRow = useCallback((index) => {
     const newRow = createRow();
     setTargetData((prevTargetData) => {
       const newData = [...prevTargetData];
       newData.splice(index + 1, 0, newRow);
       return newData;
     });
-  };
+  }, []);
 
-  const removeRow = (idToRemove) => {
+  const removeRow = useCallback((idToRemove) => {
     const updatedData = targetData.filter((row) => row.id !== idToRemove);
     setTargetData(updatedData);
-  };
+  }, []);
 
-  const handleChange = (e, stackId) => {
+  const handleChange = useCallback((e, stackId) => {
     // 新しい値を取得
     const newValue = e.target.value;
     // console.log("handleChange", e);
@@ -73,8 +72,9 @@ const Targets = ({ parentId, updateTableData, beforeData }) => {
         return data;
       });
     });
-  };
-  const selectChange = (newValue, stackId) => {
+  }, []);
+
+  const selectChange = useCallback((newValue, stackId) => {
     // console.log("selectChange", newValue);
     // 状態を更新
     setTargetData((prevTargetData) => {
@@ -85,7 +85,9 @@ const Targets = ({ parentId, updateTableData, beforeData }) => {
         return data;
       });
     });
-  };
+  }, []);
+
+  const fieldsData = useCallback(GetKintoneFields(), []);
 
   return (
     <Box
@@ -109,6 +111,7 @@ const Targets = ({ parentId, updateTableData, beforeData }) => {
             options={fieldsData}
             stackId={data.id}
             onChange={selectChange}
+            parentId={parentId}
           ></AutoComplete>
           <SelectBox
             id="display"
@@ -143,6 +146,6 @@ const Targets = ({ parentId, updateTableData, beforeData }) => {
       ))}
     </Box>
   );
-};
+});
 
 export default Targets;

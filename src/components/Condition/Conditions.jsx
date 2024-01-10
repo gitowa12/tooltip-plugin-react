@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { memo, useCallback, useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { Button, IconButton, Stack } from "@mui/material";
@@ -12,7 +12,7 @@ import Input from "../common/Input";
 import { FormControl, FormLabel, Radio, RadioGroup } from "@mui/joy";
 import RadioButton from "../common/RadioButton";
 
-const Conditions = ({ parentId, updateTableData, beforeData }) => {
+const Conditions = memo(({ parentId, updateTableData, beforeData }) => {
   const fieldsData = GetKintoneFields();
 
   const createRow = () => {
@@ -50,7 +50,7 @@ const Conditions = ({ parentId, updateTableData, beforeData }) => {
     setConditionData(updatedData);
   };
 
-  const handleTextChange = (e, stackId) => {
+  const handleTextChange = useCallback((e, stackId) => {
     // 新しい値を取得
     const newValue = e.target.value;
 
@@ -67,9 +67,9 @@ const Conditions = ({ parentId, updateTableData, beforeData }) => {
         return data;
       });
     });
-  };
+  }, []);
 
-  const selectChange = (newValue, stackId) => {
+  const selectChange = useCallback((newValue, stackId) => {
     // 新しい値を取得
     // console.log("selectChange", newValue);
     // 状態を更新
@@ -81,7 +81,8 @@ const Conditions = ({ parentId, updateTableData, beforeData }) => {
         return data;
       });
     });
-  };
+  }, []);
+
   return (
     <Box
       component="form"
@@ -123,6 +124,6 @@ const Conditions = ({ parentId, updateTableData, beforeData }) => {
       ))}
     </Box>
   );
-};
+});
 
 export default Conditions;

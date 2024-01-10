@@ -1,8 +1,8 @@
 import { FormControl } from "@mui/material";
-import React from "react";
+import React, { memo } from "react";
 import styles from "../../css/TextArea.module.css";
 
-const TextArea = ({ id, label, value, onChange }) => {
+const TextArea = memo(({ id, label, value, onChange }) => {
   return (
     <div className={styles.container}>
       <label className={styles.label}>{label}</label>
@@ -14,6 +14,6 @@ const TextArea = ({ id, label, value, onChange }) => {
       ></textarea>
     </div>
   );
-};
+});
 
 export default TextArea;

@@ -4,8 +4,9 @@ import FormControl from "@mui/joy/FormControl";
 import FormLabel from "@mui/joy/FormLabel";
 import FormHelperText from "@mui/joy/FormHelperText";
 import Input from "@mui/joy/Input";
+import { memo } from "react";
 
-const AutoComplete = ({ id, value, options, label, stackId, onChange, placeholder }) => {
+const AutoComplete = memo(({ id, value, options, label, stackId, onChange, placeholder }) => {
   return (
     <FormControl sx={{ width: 300 }}>
       <FormLabel>{label}</FormLabel>
@@ -29,5 +30,5 @@ const AutoComplete = ({ id, value, options, label, stackId, onChange, placeholde
       {/* <FormHelperText></FormHelperText> */}
     </FormControl>
   );
-};
+});
 export default AutoComplete;
