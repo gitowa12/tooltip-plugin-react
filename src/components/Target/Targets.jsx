@@ -45,10 +45,10 @@ const Targets = memo(({ parentId, updateTableData, beforeData }) => {
     });
   }, []);
 
-  const removeRow = useCallback((idToRemove) => {
+  const removeRow = (idToRemove) => {
     const updatedData = targetData.filter((row) => row.id !== idToRemove);
     setTargetData(updatedData);
-  }, []);
+  };
 
   const handleChange = useCallback((e, stackId) => {
     // 新しい値を取得
