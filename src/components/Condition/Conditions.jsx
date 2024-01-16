@@ -19,8 +19,8 @@ const Conditions = memo(({ parentId, updateTableData, beforeData }) => {
     const obj = {
       id: generateUniqueId(),
       fieldName: {
-        fieldId: "",
-        fieldCode: "",
+        fieldId: "defaultValue",
+        fieldCode: "defaultValue",
         label: "",
       },
       fieldValue: "",
@@ -28,16 +28,17 @@ const Conditions = memo(({ parentId, updateTableData, beforeData }) => {
     return obj;
   };
 
-  const [conditionData, setConditionData] = useState(beforeData || [createRow()]);
+  const [conditionData, setConditionData] = useState(
+    beforeData || [createRow()]
+  );
 
   useEffect(() => {
     // console.log(conditionData);
-    updateTableData(parentId, conditionData, "conditions");
+    updateTableData(parentId, conditionData);
   }, [conditionData]);
 
   const addRow = (index) => {
     const newRow = createRow();
-    // 状態を更新して新しい行を追加
     setConditionData((prevConditionData) => {
       const newData = [...prevConditionData];
       newData.splice(index + 1, 0, newRow);
@@ -97,7 +98,13 @@ const Conditions = memo(({ parentId, updateTableData, beforeData }) => {
       autoComplete="off"
     >
       {conditionData.map((data, index) => (
-        <Stack key={data.id} direction="row" alignItems="flex-start" spacing={1} sx={{ m: 1 }}>
+        <Stack
+          key={data.id}
+          direction="row"
+          alignItems="flex-start"
+          spacing={1}
+          sx={{ m: 1 }}
+        >
           <AutoComplete
             id="field-name"
             label="フィールド名"

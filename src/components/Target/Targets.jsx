@@ -18,8 +18,8 @@ const Targets = memo(({ parentId, updateTableData, beforeData }) => {
     const obj = {
       id: generateUniqueId(),
       fieldName: {
-        fieldId: "",
-        fieldCode: "",
+        fieldId: "defaultValue",
+        fieldCode: "defaultValue",
         label: "",
       },
       display: "tooltip",
@@ -33,7 +33,7 @@ const Targets = memo(({ parentId, updateTableData, beforeData }) => {
 
   useEffect(() => {
     // console.log(targetData);
-    updateTableData(parentId, targetData, "targets");
+    updateTableData(parentId, targetData);
   }, [targetData]);
 
   const addRow = useCallback((index) => {
@@ -103,7 +103,13 @@ const Targets = memo(({ parentId, updateTableData, beforeData }) => {
       autoComplete="off"
     >
       {targetData.map((data, index) => (
-        <Stack key={data.id} direction="row" alignItems="flex-start" spacing={1} sx={{ m: 1 }}>
+        <Stack
+          key={data.id}
+          direction="row"
+          alignItems="flex-start"
+          spacing={1}
+          sx={{ m: 1 }}
+        >
           <AutoComplete
             id="field-name"
             label="フィールド名"
@@ -122,6 +128,8 @@ const Targets = memo(({ parentId, updateTableData, beforeData }) => {
               { value: "tooltip", label: "ツールチップ" },
               { value: "alert", label: "アラート" },
               { value: "subWindow", label: "サブウィンドウ" },
+              { value: "link", label: "リンク" },
+              // { value: "button", label: "ボタン" },
             ]}
           ></SelectBox>
           <TextArea

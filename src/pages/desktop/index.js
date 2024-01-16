@@ -4,7 +4,9 @@ jQuery.noConflict();
 
   const CONFIG = kintone.plugin.app.getConfig(PLUGIN_ID);
 
-  const mainFields = Object.values(cybozu.data.page.FORM_DATA.schema.table.fieldList);
+  const mainFields = Object.values(
+    cybozu.data.page.FORM_DATA.schema.table.fieldList
+  );
   const subTables = Object.values(cybozu.data.page.FORM_DATA.schema.subTable);
   console.log("mainFields", mainFields);
   console.log("subTables", subTables);
@@ -68,6 +70,7 @@ jQuery.noConflict();
     } else if (display === "link") {
       //ツールチップ要素の作成
       const container = document.createElement("div");
+      container.className = "link-container";
       container.style.display = "flex";
       container.style.alignItems = "center";
 
@@ -80,8 +83,11 @@ jQuery.noConflict();
       obj.style.cursor = "pointer";
 
       const icon = document.createElement("img");
-      icon.src = "https://www.adobe.com/content/dam/cc/en/legal/images/badges/PDF_24.png";
+      icon.className = "link-icon";
+      icon.src =
+        "https://www.adobe.com/content/dam/cc/en/legal/images/badges/PDF_24.png";
       icon.style.width = "21px";
+      icon.style.cursor = "pointer";
 
       container.appendChild(obj);
       container.appendChild(icon);
@@ -105,7 +111,7 @@ jQuery.noConflict();
 
   function deleteTooltips() {
     const tooltipElements = document.querySelectorAll(
-      ".help-tooltip, .help-alert, .help-subWindow, .help-link"
+      ".help-tooltip, .help-alert, .help-subWindow, .link-container"
     );
     tooltipElements.forEach((el) => {
       el.remove();
@@ -154,7 +160,12 @@ jQuery.noConflict();
   });
 
   kintone.events.on(
-    ["app.record.detail.show", "app.record.create.show", "app.record.edit.show", changeEvents],
+    [
+      "app.record.detail.show",
+      "app.record.create.show",
+      "app.record.edit.show",
+      changeEvents,
+    ],
     (e) => {
       deleteTooltips();
       const record = e.record;
@@ -167,42 +178,46 @@ jQuery.noConflict();
             console.log(obj);
             const conditionData = obj.conditionData;
             const conditionSwitch = obj.conditionSwitch;
-            console.log(conditionData);
+            const targetData = obj.targetData;
+            // console.log("conditionData", conditionData);
 
             let conditionBoolean = true;
-            if (conditionSwitch === "and") {
-              conditionData.forEach((data) => {
-                const fieldCode = data.fieldName.fieldCode;
-                if (fieldCode !== "") {
-                  console.log(record[fieldCode].value);
-                  if (record[fieldCode].value !== data.fieldValue) {
-                    conditionBoolean = false;
-                    console.log("and条件でfalseにしたよ");
+            if (conditionData[0].fieldName.fieldCode !== "defaultValue") {
+              if (conditionSwitch === "and") {
+                conditionData.forEach((data) => {
+                  const fieldCode = data.fieldName.fieldCode;
+                  if (fieldCode !== "") {
+                    console.log(record[fieldCode].value);
+                    if (record[fieldCode].value !== data.fieldValue) {
+                      conditionBoolean = false;
+                    }
                   }
-                }
-              });
-            }
-            if (conditionSwitch === "or") {
-              for (let i = 0; i < conditionData.length; i++) {
-                const fieldCode = conditionData[i].fieldName.fieldCode;
-                if (fieldCode !== "") {
-                  console.log(record[fieldCode].value);
-                  if (record[fieldCode].value === conditionData[i].fieldValue) {
-                    conditionBoolean = true;
-                    console.log("or条件でtrueにしたよ");
-                    break;
-                  } else {
-                    conditionBoolean = false;
-                    console.log("or条件でfalseにしたよ");
+                });
+              }
+              if (conditionSwitch === "or") {
+                for (let i = 0; i < conditionData.length; i++) {
+                  const fieldCode = conditionData[i].fieldName.fieldCode;
+                  if (fieldCode !== "") {
+                    if (
+                      record[fieldCode].value === conditionData[i].fieldValue
+                    ) {
+                      conditionBoolean = true;
+
+                      break;
+                    } else {
+                      conditionBoolean = false;
+                    }
                   }
                 }
               }
             }
 
             if (conditionBoolean) {
-              const targetData = obj.targetData;
-              console.log(targetData);
+              console.log("targetData", targetData);
               targetData.forEach((data) => {
+                if (data.fieldName.fieldId === "defaultValue") {
+                  return;
+                }
                 const field_id = data.fieldName.fieldId;
                 const message = data.message;
                 const display = data.display;

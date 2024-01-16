@@ -90,10 +90,10 @@
 }
 
 .help-link {
-  background: url(https://www.adobe.com/content/dam/cc/en/legal/images/badges/PDF_24.png) no-repeat
-    center right;
+  /* background: url(https://www.adobe.com/content/dam/cc/en/legal/images/badges/PDF_24.png) no-repeat */
+  /* center right; */
   margin: 0;
-  padding: 2px 32px 2px 0;
+  /* padding: 2px 32px 2px 0; */
   color: #dd0000;
   text-decoration: underline;
 }

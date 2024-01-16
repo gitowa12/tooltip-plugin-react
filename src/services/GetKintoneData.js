@@ -2,7 +2,9 @@ import generateUniqueId from "../utils/UnipueId";
 
 const GetKintoneFields = () => {
   //フィールドとテーブルのデータを取得
-  const mainFields = Object.values(cybozu.data.page.FORM_DATA.schema.table.fieldList);
+  const mainFields = Object.values(
+    cybozu.data.page.FORM_DATA.schema.table.fieldList
+  );
   const subTables = Object.values(cybozu.data.page.FORM_DATA.schema.subTable);
   // console.log("mainFields", mainFields);
   // console.log("subTables", subTables);
@@ -25,8 +27,8 @@ const GetKintoneFields = () => {
   //初期値の追加
   const fieldsData = [];
   fieldsData.push({
-    fieldId: "",
-    fieldCode: "",
+    fieldId: "defaultValue",
+    fieldCode: "defaultValue",
     label: "",
   });
   //通常のフィールドとスペースフィールドでデータが異なるため、処理を振り分ける
@@ -39,7 +41,7 @@ const GetKintoneFields = () => {
       });
     } else {
       fieldsData.push({
-        fieldIdd: data.id,
+        fieldId: data.id,
         fieldCode: data.var,
         label: `スペース(${data.id}) `,
       });

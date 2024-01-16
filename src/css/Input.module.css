@@ -12,13 +12,12 @@
   border: 1px solid #cdd7e0;
   border-radius: 6px;
   box-shadow: 1px 1px 2px #f0f0f0;
-  /* padding: 3px 5px 0 5px; */
-  padding: 0;
+  padding: 0px 5px;
 }
 
 .input:hover {
   background-color: #f0f4f8;
-  cursor: pointer;
+  /* cursor: pointer; */
 }
 .input:focus {
   outline-color: #156ac6;

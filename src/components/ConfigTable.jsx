@@ -19,17 +19,39 @@ const ConfigTable = ({ beforeConfig }) => {
 
   const [tableData, setTableData] = useState(beforeConfig);
 
-  useEffect(() => {
-    console.log("tableData", tableData);
-  }, [tableData]);
+  // useEffect(() => {
+  //   console.log("tableData", tableData);
+  // }, [tableData]);
 
   // 新しい行を追加する関数
   const addRow = () => {
     const newRow = {
       id: generateUniqueId(), // 新しい行のIDを生成
-      conditionData: "",
+      conditionData: [
+        {
+          id: generateUniqueId(),
+          fieldName: {
+            fieldId: "defaultValue",
+            fieldCode: "defaultValue",
+            label: "",
+          },
+          fieldValue: "",
+        },
+      ],
       conditionSwitch: "and",
-      targetData: "",
+      targetData: [
+        {
+          id: generateUniqueId(),
+          fieldName: {
+            fieldId: "defaultValue",
+            fieldCode: "defaultValue",
+            label: "",
+          },
+          display: "tooltip",
+          message: "",
+          url: "",
+        },
+      ],
     };
     setTableData([...tableData, newRow]);
   };
@@ -45,7 +67,7 @@ const ConfigTable = ({ beforeConfig }) => {
     tableData.forEach((el, index) => {
       config[`key-${index}`] = JSON.stringify(el);
     });
-    console.log(config);
+    // console.log(config);
     // kintoneの設定情報を保存するメソッドを呼び出す
 
     kintone.plugin.app.setConfig(config);
@@ -76,54 +98,50 @@ const ConfigTable = ({ beforeConfig }) => {
   //   [tableData]
   // );
 
-  const updateConditionData = useCallback(
-    (parentId, newData) => {
-      // 既存のテーブルデータをコピーして変更
-      const updatedTableData = tableData.map((row) => {
-        if (row.id === parentId) {
-          return { ...row, conditionData: newData };
-        }
-        return row;
-      });
-      setTableData(updatedTableData);
-    },
-    [tableData]
-  );
+  const updateConditionData = (parentId, newData) => {
+    // 既存のテーブルデータをコピーして変更
+    const updatedTableData = tableData.map((row) => {
+      if (row.id === parentId) {
+        return { ...row, conditionData: newData };
+      }
+      return row;
+    });
+    console.log("updateConditionData", updatedTableData);
+    setTableData(updatedTableData);
+  };
 
-  const updateConditionSwitchData = useCallback(
-    (parentId, newData) => {
-      // 既存のテーブルデータをコピーして変更
-      const updatedTableData = tableData.map((row) => {
-        if (row.id === parentId) {
-          return { ...row, conditionSwitch: newData };
-        }
-        return row;
-      });
-      setTableData(updatedTableData);
-    },
-    [tableData]
-  );
+  const updateConditionSwitchData = (parentId, newData) => {
+    // 既存のテーブルデータをコピーして変更
+    const updatedTableData = tableData.map((row) => {
+      if (row.id === parentId) {
+        return { ...row, conditionSwitch: newData };
+      }
+      return row;
+    });
+    setTableData(updatedTableData);
+  };
 
-  const updateTargetData = useCallback(
-    (parentId, newData) => {
-      // 既存のテーブルデータをコピーして変更
-      const updatedTableData = tableData.map((row) => {
-        if (row.id === parentId) {
-          return { ...row, targetData: newData };
-        }
-        return row;
-      });
-      setTableData(updatedTableData);
-    },
-    [tableData]
-  );
+  const updateTargetData = (parentId, newData) => {
+    // 既存のテーブルデータをコピーして変更
+    const updatedTableData = tableData.map((row) => {
+      if (row.id === parentId) {
+        return { ...row, targetData: newData };
+      }
+      return row;
+    });
+    console.log("updateTrgetsData", updatedTableData);
+    setTableData(updatedTableData);
+  };
 
   return (
     <>
       <Button variant="contained" onClick={() => addRow()} sx={{ m: 1 }}>
         行の追加
       </Button>
-      <TableContainer component={Paper} sx={{ width: "fit-content", minWidth: "1895px" }}>
+      <TableContainer
+        component={Paper}
+        sx={{ width: "fit-content", minWidth: "1895px" }}
+      >
         <Table size="small" aria-label="a dense table">
           <TableHead>
             <TableRow>
@@ -159,7 +177,10 @@ const ConfigTable = ({ beforeConfig }) => {
                   />
                 </TableCell>
                 <TableCell sx={{ verticalAlign: "top", padding: 2 }}>
-                  <Button variant="contained" onClick={() => removeRow(data.id)}>
+                  <Button
+                    variant="contained"
+                    onClick={() => removeRow(data.id)}
+                  >
                     削除
                   </Button>
                 </TableCell>
@@ -175,10 +196,18 @@ const ConfigTable = ({ beforeConfig }) => {
         alignItems="center"
         spacing={1}
       >
-        <Button variant="contained" onClick={handleSave} sx={{ width: "110px" }}>
+        <Button
+          variant="contained"
+          onClick={handleSave}
+          sx={{ width: "110px" }}
+        >
           保存
         </Button>
-        <Button variant="outlined" onClick={() => history.back()} sx={{ width: "110px" }}>
+        <Button
+          variant="outlined"
+          onClick={() => history.back()}
+          sx={{ width: "110px" }}
+        >
           キャンセル
         </Button>
       </Stack>

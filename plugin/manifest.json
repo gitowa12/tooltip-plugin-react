@@ -10,7 +10,11 @@
   "type": "APP",
   "icon": "image/icon.png",
   "desktop": {
-    "js": ["https://js.cybozu.com/jquery/3.3.1/jquery.min.js", "js/desktop.js"],
+    "js": [
+      "https://js.cybozu.com/jquery/3.3.1/jquery.min.js",
+      "https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js",
+      "js/desktop.js"
+    ],
     "css": ["css/desktop.css"]
   },
   "config": {
