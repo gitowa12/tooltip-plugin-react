@@ -89,11 +89,24 @@
   border-bottom: 2px solid #ccc100;
 }
 
+.link-container {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 8px;
+}
+
 .help-link {
   /* background: url(https://www.adobe.com/content/dam/cc/en/legal/images/badges/PDF_24.png) no-repeat */
   /* center right; */
   margin: 0;
   /* padding: 2px 32px 2px 0; */
-  color: #dd0000;
+  display: inline-block;
+  color: red;
   text-decoration: underline;
+  cursor: pointer;
+}
+
+.link-icon {
+  width: 21px;
+  cursor: pointer;
 }

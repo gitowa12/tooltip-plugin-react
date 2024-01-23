@@ -6,7 +6,7 @@ import generateUniqueId from "../../utils/UnipueId";
 import { Add, AddCircle, Remove, RemoveCircle } from "@mui/icons-material";
 import AddButton from "../common/AddButton";
 import RemoveButton from "../common/RemoveButton";
-import GetKintoneFields from "../../services/GetKintoneData";
+import GetKintoneFields from "../../services/GetKintoneFields";
 import AutoComplete from "../common/AutoComplete";
 import Input from "../common/Input";
 import { FormControl, FormLabel, Radio, RadioGroup } from "@mui/joy";
@@ -14,14 +14,20 @@ import RadioButton from "../common/RadioButton";
 
 const Conditions = memo(({ parentId, updateTableData, beforeData }) => {
   const fieldsData = GetKintoneFields();
+  const defaultOption = {
+    fieldId: "default",
+    fieldCode: "default",
+    label: "常に表示",
+  };
+  fieldsData.unshift(defaultOption);
 
   const createRow = () => {
     const obj = {
       id: generateUniqueId(),
       fieldName: {
-        fieldId: "defaultValue",
-        fieldCode: "defaultValue",
-        label: "",
+        fieldId: "default",
+        fieldCode: "default",
+        label: "常に表示",
       },
       fieldValue: "",
     };
@@ -33,7 +39,7 @@ const Conditions = memo(({ parentId, updateTableData, beforeData }) => {
   );
 
   useEffect(() => {
-    // console.log(conditionData);
+    console.log(conditionData);
     updateTableData(parentId, conditionData);
   }, [conditionData]);
 
@@ -51,28 +57,24 @@ const Conditions = memo(({ parentId, updateTableData, beforeData }) => {
     setConditionData(updatedData);
   };
 
-  const handleTextChange = useCallback((e, stackId) => {
+  const handleTextChange = (e, stackId) => {
     // 新しい値を取得
+    // console.log("handleTextChange", stackId);
     const newValue = e.target.value;
-
     // 状態を更新
     setConditionData((prevConditionData) => {
       return prevConditionData.map((data) => {
         if (data.id === stackId) {
-          if (e.target.id === "field-name") {
-            return { ...data, fieldName: newValue };
-          } else if (e.target.id === "field-value") {
-            return { ...data, fieldValue: newValue };
-          }
+          return { ...data, fieldValue: newValue };
         }
         return data;
       });
     });
-  }, []);
+  };
 
-  const selectChange = useCallback((newValue, stackId) => {
+  const selectChange = (newValue, stackId) => {
     // 新しい値を取得
-    // console.log("selectChange", newValue);
+    console.log("selectChange", newValue);
     // 状態を更新
     setConditionData((prevTargetData) => {
       return prevTargetData.map((data) => {
@@ -82,17 +84,16 @@ const Conditions = memo(({ parentId, updateTableData, beforeData }) => {
         return data;
       });
     });
-  }, []);
+  };
 
   return (
     <Box
-      component="form"
       sx={{
         width: "fit-content",
-        minWidth: "583px",
+        minWidth: "563px",
         boxShadow: 2,
         borderRadius: 0,
-        padding: 1,
+        padding: "4px",
       }}
       noValidate
       autoComplete="off"
@@ -112,14 +113,16 @@ const Conditions = memo(({ parentId, updateTableData, beforeData }) => {
             options={fieldsData}
             stackId={data.id}
             onChange={selectChange}
-            placeholder={"常に表示"}
+            // placeholder={"常に表示"}
           ></AutoComplete>
           <Input
-            id="field-value"
+            stackId={data.id}
+            name="field-value"
             label="値"
             size="small"
             value={data.fieldValue}
             onChange={(e) => handleTextChange(e, data.id)}
+            fieldName={data.fieldName}
           ></Input>
           <Stack direction="row" alignItems="center">
             <AddButton onClick={() => addRow(index)}></AddButton>

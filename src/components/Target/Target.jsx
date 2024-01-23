@@ -6,7 +6,7 @@ import AddButton from "../common/AddButton";
 import RemoveButton from "../common/RemoveButton";
 import SelectBox from "../common/SelectBox";
 
-import GetKintoneFields from "../../services/GetKintoneData";
+import GetKintoneFields from "../../services/GetKintoneFields";
 import TextArea from "../common/TextArea";
 import UnstyledTextareaIntroduction from "../common/TextArea";
 import AutoComplete from "../common/AutoComplete";
@@ -18,9 +18,9 @@ const Targets = memo(({ parentId, updateTableData, beforeData }) => {
     const obj = {
       id: generateUniqueId(),
       fieldName: {
-        fieldId: "defaultValue",
-        fieldCode: "defaultValue",
-        label: "",
+        fieldId: "default",
+        fieldCode: "default",
+        label: "-----",
       },
       display: "tooltip",
       message: "",
@@ -87,17 +87,23 @@ const Targets = memo(({ parentId, updateTableData, beforeData }) => {
     });
   }, []);
 
-  const fieldsData = useCallback(GetKintoneFields(), []);
+  //AutoCompleteに渡す選択肢に初期値を追加
+  const fieldsData = GetKintoneFields();
+  const defaultOption = {
+    fieldId: "default",
+    fieldCode: "default",
+    label: "-----",
+  };
+  fieldsData.unshift(defaultOption);
 
   return (
     <Box
-      component="form"
       sx={{
         width: "fit-content",
-        minWidth: "1120px",
+        minWidth: "1109px",
         boxShadow: 2,
         borderRadius: 0,
-        padding: 1,
+        padding: "4px",
       }}
       noValidate
       autoComplete="off"
@@ -140,7 +146,7 @@ const Targets = memo(({ parentId, updateTableData, beforeData }) => {
           ></TextArea>
           <TextArea
             id={"url"}
-            label={"URL"}
+            label={"URL (サブウィンドウ・リンク選択時)"}
             value={data.url}
             onChange={(e) => handleChange(e, data.id)}
           ></TextArea>

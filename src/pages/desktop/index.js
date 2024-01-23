@@ -18,7 +18,7 @@ jQuery.noConflict();
       document.querySelector(`.subtable-row-label-${field_id}`) ||
       kintone.app.record.getSpaceElement(field_id);
 
-    console.log(parentElement);
+    // console.log(parentElement);
     if (display === "tooltip") {
       //ツールチップ要素を作成
       const obj = document.createElement("div");
@@ -69,31 +69,23 @@ jQuery.noConflict();
       };
     } else if (display === "link") {
       //ツールチップ要素の作成
-      const container = document.createElement("div");
-      container.className = "link-container";
-      container.style.display = "flex";
-      container.style.alignItems = "center";
+      const linkContainer = document.createElement("div");
+      linkContainer.className = "link-container";
 
       const obj = document.createElement("div");
       obj.innerText = message;
       obj.className = "help-link";
-      obj.style.display = "inline-block";
-      obj.style.color = "red";
-      obj.style.textDecoration = "underline";
-      obj.style.cursor = "pointer";
 
-      const icon = document.createElement("img");
-      icon.className = "link-icon";
-      icon.src =
+      const pdfIcon = document.createElement("img");
+      pdfIcon.className = "link-icon";
+      pdfIcon.src =
         "https://www.adobe.com/content/dam/cc/en/legal/images/badges/PDF_24.png";
-      icon.style.width = "21px";
-      icon.style.cursor = "pointer";
 
-      container.appendChild(obj);
-      container.appendChild(icon);
-      parentElement.appendChild(container);
+      linkContainer.appendChild(obj);
+      linkContainer.appendChild(pdfIcon);
+      parentElement.appendChild(linkContainer);
 
-      container.onclick = () => {
+      linkContainer.onclick = () => {
         openSubWindow(url, 600, 500);
       };
     } else if (display === "button") {
@@ -118,11 +110,11 @@ jQuery.noConflict();
     });
   }
 
-  //サブウィンドウが開閉を追跡する変数
-  let subWindow = "";
+  let subWindow = ""; //サブウィンドウの開閉を追跡する変数
   function openSubWindow(url, windowHeight, windowWidth) {
     //既にサブウィンドウを開いていたら、閉じる
     if (subWindow) {
+      console.log("subWindow", subWindow);
       subWindow.close();
     }
 
@@ -151,7 +143,7 @@ jQuery.noConflict();
       conditionAllay.add(data.fieldName.fieldCode);
     });
   });
-  console.log("conditionAllay", conditionAllay);
+  // console.log("conditionAllay", conditionAllay);
 
   const changeEvents = [];
   conditionAllay.forEach((el) => {
@@ -175,47 +167,40 @@ jQuery.noConflict();
         if (Object.keys(CONFIG).length) {
           Object.keys(CONFIG).forEach((key) => {
             const obj = JSON.parse(CONFIG[key]);
-            console.log(obj);
+            // console.log(obj);
             const conditionData = obj.conditionData;
             const conditionSwitch = obj.conditionSwitch;
             const targetData = obj.targetData;
             // console.log("conditionData", conditionData);
 
             let conditionBoolean = true;
-            if (conditionData[0].fieldName.fieldCode !== "defaultValue") {
+            if (conditionData[0].fieldName.fieldCode !== "default") {
               if (conditionSwitch === "and") {
                 conditionData.forEach((data) => {
                   const fieldCode = data.fieldName.fieldCode;
-                  if (fieldCode !== "") {
-                    console.log(record[fieldCode].value);
-                    if (record[fieldCode].value !== data.fieldValue) {
-                      conditionBoolean = false;
-                    }
+                  console.log("AND", record[fieldCode].value);
+                  if (record[fieldCode].value !== data.fieldValue) {
+                    conditionBoolean = false;
                   }
                 });
-              }
-              if (conditionSwitch === "or") {
+              } else if (conditionSwitch === "or") {
                 for (let i = 0; i < conditionData.length; i++) {
                   const fieldCode = conditionData[i].fieldName.fieldCode;
-                  if (fieldCode !== "") {
-                    if (
-                      record[fieldCode].value === conditionData[i].fieldValue
-                    ) {
-                      conditionBoolean = true;
-
-                      break;
-                    } else {
-                      conditionBoolean = false;
-                    }
+                  console.log("OR", record[fieldCode].value);
+                  if (record[fieldCode].value === conditionData[i].fieldValue) {
+                    conditionBoolean = true;
+                    break;
+                  } else {
+                    conditionBoolean = false;
                   }
                 }
               }
             }
 
             if (conditionBoolean) {
-              console.log("targetData", targetData);
+              // console.log("targetData", targetData);
               targetData.forEach((data) => {
-                if (data.fieldName.fieldId === "defaultValue") {
+                if (data.fieldName.fieldId === "default") {
                   return;
                 }
                 const field_id = data.fieldName.fieldId;

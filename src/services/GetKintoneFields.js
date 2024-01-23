@@ -24,13 +24,13 @@ const GetKintoneFields = () => {
 
   //セレクトボックスのリスト用に整形する
   const conbinedData = [...mainFields, ...subTables, ...spaceFields];
-  //初期値の追加
+  // //初期値の追加
   const fieldsData = [];
-  fieldsData.push({
-    fieldId: "defaultValue",
-    fieldCode: "defaultValue",
-    label: "",
-  });
+  // fieldsData.push({
+  //   fieldId: "defaultValue",
+  //   fieldCode: "defaultValue",
+  //   label: "",
+  // });
   //通常のフィールドとスペースフィールドでデータが異なるため、処理を振り分ける
   conbinedData.forEach((data) => {
     if (data.label !== undefined) {

@@ -5,12 +5,13 @@ import FormLabel from "@mui/joy/FormLabel";
 import FormHelperText from "@mui/joy/FormHelperText";
 import Input from "@mui/joy/Input";
 import { memo } from "react";
+import styles from "../../css/AutoComplete.module.css";
 
 const AutoComplete = memo(
   ({ id, value, options, label, stackId, onChange, placeholder }) => {
     return (
       <FormControl sx={{ width: 300 }}>
-        <FormLabel>{label}</FormLabel>
+        <label className={styles.label}>{label}</label>
         <Autocomplete
           sx={{ height: "26px", pl: "4px" }}
           size="small"
