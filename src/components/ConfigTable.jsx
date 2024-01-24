@@ -13,6 +13,7 @@ import Targets from "./Target/Target";
 import RadioButton from "./common/RadioButton";
 import { FormProvider, useForm } from "react-hook-form";
 import styles from "../css/ConfigTable.module.css";
+import Swal from "sweetalert2";
 
 const ConfigTable = ({ beforeConfig }) => {
   // テーブルのデータを管理する状態
@@ -20,7 +21,7 @@ const ConfigTable = ({ beforeConfig }) => {
   // console.log(Object.values(config));
 
   //React-Hook-Form
-  const methods = useForm();
+  const methods = useForm({});
   const {
     handleSubmit,
     watch,
@@ -127,9 +128,16 @@ const ConfigTable = ({ beforeConfig }) => {
   };
 
   const onError = (errors, e) => {
-    alert(
-      "入力内容に不備があるため、設定を保存できません。\n入力内容を確認してください。"
-    ); /* console.log(errors, e) */
+    Swal.fire({
+      title: "保存失敗",
+      text: "入力内容に不備があるため、設定を保存できません。\n入力内容を確認してください。",
+      icon: "error",
+      confirmButtonText: "了解",
+      confirmButtonColor: "#1976d2",
+      showClass: {
+        icon: "", // アイコンの表示アニメーションクラスを空にする
+      },
+    });
   };
   return (
     <FormProvider {...methods}>
