@@ -30,6 +30,7 @@
 
 .alartMessage {
   color: red;
+  font-size: 12px;
   margin-top: 2px;
   margin-bottom: 0px;
 }

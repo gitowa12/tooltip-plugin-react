@@ -1,14 +1,16 @@
 {
   "name": {
-    "en": "react"
+    "en": "Tooltip Plugin extended",
+    "ja": "Tooltip Plugin 機能拡張版"
   },
   "description": {
-    "en": "react"
+    "en": "Tooltip Plugin extended",
+    "ja": "Tooltip Plugin 機能拡張版"
   },
   "manifest_version": 1,
   "version": 1,
   "type": "APP",
-  "icon": "image/icon.png",
+  "icon": "image/tooltip-icon.png",
   "desktop": {
     "js": [
       "https://js.cybozu.com/jquery/3.3.1/jquery.min.js",

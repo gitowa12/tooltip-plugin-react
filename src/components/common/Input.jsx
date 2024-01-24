@@ -21,7 +21,7 @@ const Input = ({ stackId, name, label, value, onChange, fieldName }) => {
   // 必須ルールを含むその他のルールを定義
   const validationRules = {};
   if (!disabledBool) {
-    validationRules.required = "入力必須です";
+    validationRules.required = "入力は必須です";
   } else {
     validationRules.required = "";
   }

@@ -21,10 +21,14 @@ const ConfigTable = ({ beforeConfig }) => {
 
   //React-Hook-Form
   const methods = useForm();
-  const { handleSubmit, watch } = methods;
-  const onSubmit = (data) => {
-    console.log(data);
-  };
+  const {
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = methods;
+  // const onSubmit = (data) => {
+  //   console.log(data);
+  // };
 
   const createRow = () => {
     const obj = {
@@ -80,11 +84,11 @@ const ConfigTable = ({ beforeConfig }) => {
     });
 
     // kintoneの設定情報を保存するメソッドを呼び出す
-    kintone.plugin.app.setConfig(config);
-    ////検証用（前のページに自動で飛ばない）
-    // kintone.plugin.app.setConfig(config, () => {
-    //   console.log(config);
-    // });
+    // kintone.plugin.app.setConfig(config);
+    //検証用（前のページに自動で飛ばない）
+    kintone.plugin.app.setConfig(config, () => {
+      console.log(config);
+    });
   };
 
   const updateConditionData = (parentId, newData) => {
@@ -122,11 +126,16 @@ const ConfigTable = ({ beforeConfig }) => {
     setTableData(updatedTableData);
   };
 
+  const onError = (errors, e) => {
+    alert(
+      "入力内容に不備があるため、設定を保存できません。\n入力内容を確認してください。"
+    ); /* console.log(errors, e) */
+  };
   return (
     <FormProvider {...methods}>
       <Box
         component="form"
-        onSubmit={handleSubmit(handleSave)}
+        // onSubmit={handleSubmit(handleSave)}
         sx={{
           width: "fit-content",
         }}
@@ -206,7 +215,12 @@ const ConfigTable = ({ beforeConfig }) => {
           alignItems="center"
           spacing={1}
         >
-          <Button variant="contained" type="submit" sx={{ width: "110px" }}>
+          <Button
+            variant="contained"
+            type="button"
+            onClick={handleSubmit(handleSave, onError)}
+            sx={{ width: "110px" }}
+          >
             保存
           </Button>
           <Button

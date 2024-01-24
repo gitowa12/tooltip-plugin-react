@@ -39,7 +39,7 @@ const Conditions = memo(({ parentId, updateTableData, beforeData }) => {
   );
 
   useEffect(() => {
-    console.log(conditionData);
+    // console.log(conditionData);
     updateTableData(parentId, conditionData);
   }, [conditionData]);
 
@@ -74,7 +74,7 @@ const Conditions = memo(({ parentId, updateTableData, beforeData }) => {
 
   const selectChange = (newValue, stackId) => {
     // 新しい値を取得
-    console.log("selectChange", newValue);
+    // console.log("selectChange", newValue);
     // 状態を更新
     setConditionData((prevTargetData) => {
       return prevTargetData.map((data) => {

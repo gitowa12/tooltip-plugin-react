@@ -33,7 +33,7 @@ const TargetRow = ({ rowId, dataId, index }) => {
   };
 
   const [data, setData] = useState(beforeConfig !== undefined || createData());
-  console.log(data);
+  // console.log(data);
 
   const handleChange = useCallback((e) => {
     // 新しい値を取得
