@@ -1,4 +1,8 @@
+import pdfIcon_BASE64 from "../../images/pdf-icon.js";
+
+console.log(pdfIcon_BASE64);
 jQuery.noConflict();
+
 (function ($, PLUGIN_ID) {
   "use strict";
 
@@ -65,7 +69,7 @@ jQuery.noConflict();
       parentElement.appendChild(obj);
 
       obj.onclick = () => {
-        openSubWindow(url, 600, 500);
+        openSubWindow(url);
       };
     } else if (display === "link") {
       //ツールチップ要素の作成
@@ -78,15 +82,17 @@ jQuery.noConflict();
 
       const pdfIcon = document.createElement("img");
       pdfIcon.className = "link-icon";
-      pdfIcon.src =
-        "https://www.adobe.com/content/dam/cc/en/legal/images/badges/PDF_24.png";
+
+      pdfIcon.src = pdfIcon_BASE64;
+      // pdfIcon.src =
+      //   "https://www.adobe.com/content/dam/cc/en/legal/images/badges/PDF_24.png";
 
       linkContainer.appendChild(obj);
       linkContainer.appendChild(pdfIcon);
       parentElement.appendChild(linkContainer);
 
       linkContainer.onclick = () => {
-        openSubWindow(url, 600, 500);
+        openSubWindow(url);
       };
     } else if (display === "button") {
       //ツールチップ要素の作成
@@ -96,7 +102,7 @@ jQuery.noConflict();
 
       parentElement.appendChild(obj);
       obj.onclick = () => {
-        openSubWindow(url, 600, 500);
+        openSubWindow(url);
       };
     }
   }
@@ -110,14 +116,32 @@ jQuery.noConflict();
     });
   }
 
+  // let subWindow = ""; //サブウィンドウの開閉を追跡する変数
+  // function openSubWindow(url, windowHeight, windowWidth) {
+  //   //既にサブウィンドウを開いていたら、閉じる
+  //   if (subWindow) {
+  //     console.log("subWindow", subWindow);
+  //     subWindow.close();
+  //   }
+
+  //   const subTop = screenY + (window.outerHeight - windowHeight) / 2;
+  //   const subLeft = screenX + window.outerWidth / 1.2; //画面左
+  //   subWindow = window.open(
+  //     url,
+  //     "url",
+  //     `width = ${windowWidth}, height = ${windowHeight}, top = ${subTop}, left = ${subLeft}, toolbar = yes, resizable = yes, scrollbar = yes`
+  //   );
   let subWindow = ""; //サブウィンドウの開閉を追跡する変数
-  function openSubWindow(url, windowHeight, windowWidth) {
+  function openSubWindow(url) {
     //既にサブウィンドウを開いていたら、閉じる
     if (subWindow) {
       console.log("subWindow", subWindow);
       subWindow.close();
     }
 
+    // サブウィンドウの横幅を画面の1/3に設定
+    const windowWidth = window.outerWidth / 3;
+    const windowHeight = window.outerHeight; // 現在のウィンドウの高さをそのまま使用
     const subTop = screenY + (window.outerHeight - windowHeight) / 2;
     const subLeft = screenX + window.outerWidth / 1.2; //画面左
     subWindow = window.open(
@@ -125,7 +149,6 @@ jQuery.noConflict();
       "url",
       `width = ${windowWidth}, height = ${windowHeight}, top = ${subTop}, left = ${subLeft}, toolbar = yes, resizable = yes, scrollbar = yes`
     );
-
     //画面リロードのタイミングでサブウィンドウが開いていれば、サブウィンドウ閉じる
     window.addEventListener("beforeunload", () => {
       if (subWindow) {
