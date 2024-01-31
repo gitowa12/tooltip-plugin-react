@@ -1,5 +1,5 @@
 import React, { memo, useState } from "react";
-import styles from "../../css/RadioButton.module.css";
+import styles from "./RadioButton.module.css";
 
 const RadioButton = memo(({ onChange, options, beforeData, parentId }) => {
   let checker = "";

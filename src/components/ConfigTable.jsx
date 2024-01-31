@@ -10,7 +10,7 @@ import Paper from "@mui/material/Paper";
 import generateUniqueId from "../utils/UnipueId";
 import Conditions from "./Condition/Condition";
 import Targets from "./Target/Target";
-import RadioButton from "./common/RadioButton";
+import RadioButton from "./common/RadioButton/RadioButton";
 import { FormProvider, useForm } from "react-hook-form";
 import styles from "../css/ConfigTable.module.css";
 import Swal from "sweetalert2";
@@ -55,6 +55,7 @@ const ConfigTable = ({ beforeConfig }) => {
             label: "-----",
           },
           display: "tooltip",
+          subWindowId: "1",
           message: "",
           url: "",
         },
@@ -85,11 +86,11 @@ const ConfigTable = ({ beforeConfig }) => {
     });
 
     // kintoneの設定情報を保存するメソッドを呼び出す
-    // kintone.plugin.app.setConfig(config);
+    kintone.plugin.app.setConfig(config);
     //検証用（前のページに自動で飛ばない）
-    kintone.plugin.app.setConfig(config, () => {
-      console.log(config);
-    });
+    // kintone.plugin.app.setConfig(config, () => {
+    //   console.log(config);
+    // });
   };
 
   const updateConditionData = (parentId, newData) => {
@@ -139,6 +140,7 @@ const ConfigTable = ({ beforeConfig }) => {
       },
     });
   };
+
   return (
     <FormProvider {...methods}>
       <Box

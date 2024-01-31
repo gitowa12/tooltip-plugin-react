@@ -1,6 +1,6 @@
 import pdfIcon_BASE64 from "../../images/pdf-icon.js";
 
-console.log(pdfIcon_BASE64);
+// console.log(pdfIcon_BASE64);
 jQuery.noConflict();
 
 (function ($, PLUGIN_ID) {
@@ -12,10 +12,10 @@ jQuery.noConflict();
     cybozu.data.page.FORM_DATA.schema.table.fieldList
   );
   const subTables = Object.values(cybozu.data.page.FORM_DATA.schema.subTable);
-  console.log("mainFields", mainFields);
-  console.log("subTables", subTables);
+  // console.log("mainFields", mainFields);
+  // console.log("subTables", subTables);
 
-  function tooltip(field_id, message, display, url) {
+  function tooltip(field_id, message, display, subWindowId, url) {
     //フィールド名とサブテーブル名とスペースフィールドの要素を取得
     const parentElement =
       document.querySelector(`.label-${field_id}`) ||
@@ -69,7 +69,7 @@ jQuery.noConflict();
       parentElement.appendChild(obj);
 
       obj.onclick = () => {
-        openSubWindow(url);
+        openSubWindow(subWindowId, url);
       };
     } else if (display === "link") {
       //ツールチップ要素の作成
@@ -92,7 +92,7 @@ jQuery.noConflict();
       parentElement.appendChild(linkContainer);
 
       linkContainer.onclick = () => {
-        openSubWindow(url);
+        openSubWindow(subWindowId, url);
       };
     } else if (display === "button") {
       //ツールチップ要素の作成
@@ -102,7 +102,7 @@ jQuery.noConflict();
 
       parentElement.appendChild(obj);
       obj.onclick = () => {
-        openSubWindow(url);
+        openSubWindow(subWindowId, url);
       };
     }
   }
@@ -117,38 +117,29 @@ jQuery.noConflict();
   }
 
   // let subWindow = ""; //サブウィンドウの開閉を追跡する変数
-  // function openSubWindow(url, windowHeight, windowWidth) {
-  //   //既にサブウィンドウを開いていたら、閉じる
-  //   if (subWindow) {
-  //     console.log("subWindow", subWindow);
-  //     subWindow.close();
-  //   }
-
-  //   const subTop = screenY + (window.outerHeight - windowHeight) / 2;
-  //   const subLeft = screenX + window.outerWidth / 1.2; //画面左
-  //   subWindow = window.open(
-  //     url,
-  //     "url",
-  //     `width = ${windowWidth}, height = ${windowHeight}, top = ${subTop}, left = ${subLeft}, toolbar = yes, resizable = yes, scrollbar = yes`
-  //   );
-  let subWindow = ""; //サブウィンドウの開閉を追跡する変数
-  function openSubWindow(url) {
-    //既にサブウィンドウを開いていたら、閉じる
-    if (subWindow) {
-      console.log("subWindow", subWindow);
-      subWindow.close();
-    }
+  function openSubWindow(subWindowId, url) {
+    // //既にサブウィンドウを開いていたら、閉じる
+    // if (subWindow) {
+    //   console.log("subWindow", subWindow);
+    //   subWindow.close();
+    // }
 
     // サブウィンドウの横幅を画面の1/3に設定
-    const windowWidth = window.outerWidth / 3;
-    const windowHeight = window.outerHeight; // 現在のウィンドウの高さをそのまま使用
+    // const windowWidth = window.outerWidth / 3;
+    // const windowHeight = window.outerHeight; // 現在のウィンドウの高さをそのまま使用
+
+    const windowWidth = window.screen.width / 3; //モニターサイズの横ピクセル1/3
+    const windowHeight = windowWidth * 1.1414; // A4比の立幅を計算
+
     const subTop = screenY + (window.outerHeight - windowHeight) / 2;
-    const subLeft = screenX + window.outerWidth / 1.2; //画面左
-    subWindow = window.open(
+    const subLeft = screenX + window.outerWidth * 0.8; //画面左
+    const subWindow = window.open(
       url,
-      "url",
+      subWindowId,
       `width = ${windowWidth}, height = ${windowHeight}, top = ${subTop}, left = ${subLeft}, toolbar = yes, resizable = yes, scrollbar = yes`
     );
+
+    // console.log("subWindow", subWindow);
     //画面リロードのタイミングでサブウィンドウが開いていれば、サブウィンドウ閉じる
     window.addEventListener("beforeunload", () => {
       if (subWindow) {
@@ -201,7 +192,7 @@ jQuery.noConflict();
               if (conditionSwitch === "and") {
                 conditionData.forEach((data) => {
                   const fieldCode = data.fieldName.fieldCode;
-                  console.log("AND", record[fieldCode].value);
+                  // console.log("AND", record[fieldCode].value);
                   if (record[fieldCode].value !== data.fieldValue) {
                     conditionBoolean = false;
                   }
@@ -209,7 +200,7 @@ jQuery.noConflict();
               } else if (conditionSwitch === "or") {
                 for (let i = 0; i < conditionData.length; i++) {
                   const fieldCode = conditionData[i].fieldName.fieldCode;
-                  console.log("OR", record[fieldCode].value);
+                  // console.log("OR", record[fieldCode].value);
                   if (record[fieldCode].value === conditionData[i].fieldValue) {
                     conditionBoolean = true;
                     break;
@@ -229,8 +220,9 @@ jQuery.noConflict();
                 const field_id = data.fieldName.fieldId;
                 const message = data.message;
                 const display = data.display;
+                const subWindowId = data.subWindowId;
                 const url = data.url;
-                tooltip(field_id, message, display, url);
+                tooltip(field_id, message, display, subWindowId, url);
               });
             }
           });
