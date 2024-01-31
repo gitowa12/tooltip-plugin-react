@@ -1,5 +1,5 @@
 import React, { memo, useEffect } from "react";
-import styles from "../../css/Input.module.css";
+import styles from "./Input.module.css";
 import { useFormContext } from "react-hook-form";
 
 const Input = ({ stackId, name, label, value, onChange, fieldName }) => {
@@ -25,13 +25,6 @@ const Input = ({ stackId, name, label, value, onChange, fieldName }) => {
   } else {
     validationRules.required = "";
   }
-  // disabledの状態が変更されたときにエラーメッセージをクリア
-  // useEffect(() => {
-  //   setError(id, {});
-  //   // if (!disabledBool) {
-  //   //   setError(id, {});
-  //   // }
-  // }, [fieldName, setError]);
 
   useEffect(() => {
     clearErrors(id);

@@ -1,16 +1,22 @@
 .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 4px;
+  font-size: 0.75rem;
 }
 
 .label {
   font-weight: 500;
-  font-size: 0.875rem;
-  margin-bottom: 2px;
+  font-size: 0.75rem;
+  /* margin-bottom: 2px; */
   display: block;
 }
 
 .selectBox {
-  height: 26px;
-  width: 150px;
+  /* height: 26px; */
+  height: 20px;
+  width: 35px;
   background-color: #fbfcfe;
   border: 1px solid #cdd7e0;
   border-radius: 6px;
@@ -22,10 +28,16 @@
   background-size: 13px 13px; */
 }
 
+.hidden {
+  display: none;
+}
 .selectBox:hover {
   background-color: #f0f4f8;
   cursor: pointer;
 }
 .selectBox:focus {
   outline-color: #156ac6;
+}
+.selectBox:disabled {
+  background-color: #d6d8dc;
 }

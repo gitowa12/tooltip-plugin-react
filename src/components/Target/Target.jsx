@@ -2,15 +2,16 @@ import React, { memo, useCallback, useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import { Stack, TextField, TextareaAutosize } from "@mui/material";
 import generateUniqueId from "../../utils/UnipueId";
-import AddButton from "../common/AddButton";
-import RemoveButton from "../common/RemoveButton";
-import SelectBox from "../common/SelectBox";
-
+import AddButton from "../common/AddButton/AddButton";
+import RemoveButton from "../common/RemoveButton/RemoveButton";
+import SelectBox from "../common/SelectBox/SelectBox";
+import SelectBox_subWinId from "../common/SelectBox_subWinId/SelectBox_subWinId";
 import GetKintoneFields from "../../services/GetKintoneFields";
-import TextArea from "../common/TextArea";
-import UnstyledTextareaIntroduction from "../common/TextArea";
-import AutoComplete from "../common/AutoComplete";
-import LabelAndHelperText from "../common/AutoComplete";
+import TextArea from "../common/TextArea/TextArea";
+import UnstyledTextareaIntroduction from "../common/TextArea/TextArea";
+import AutoComplete from "../common/AutoComplete/AutoComplete";
+import LabelAndHelperText from "../common/AutoComplete/AutoComplete";
+import { width } from "@mui/system";
 
 const Targets = memo(({ parentId, updateTableData, beforeData }) => {
   /* console.log(fieldsData); */
@@ -23,6 +24,7 @@ const Targets = memo(({ parentId, updateTableData, beforeData }) => {
         label: "-----",
       },
       display: "tooltip",
+      subWindowId: "1",
       message: "",
       url: "",
     };
@@ -50,7 +52,7 @@ const Targets = memo(({ parentId, updateTableData, beforeData }) => {
     setTargetData(updatedData);
   };
 
-  const handleChange = useCallback((e, stackId) => {
+  const handleChange = (e, stackId) => {
     // 新しい値を取得
     const newValue = e.target.value;
     // console.log("handleChange", e);
@@ -59,8 +61,12 @@ const Targets = memo(({ parentId, updateTableData, beforeData }) => {
       return prevTargetData.map((data) => {
         if (data.id === stackId) {
           if (e.target.id === "display") {
-            console.log(newValue);
+            // console.log(newValue);
             return { ...data, display: newValue };
+          }
+          if (e.target.id === "subWindowId") {
+            // console.log(newValue);
+            return { ...data, subWindowId: newValue };
           }
           if (e.target.id === "message") {
             return { ...data, message: newValue };
@@ -72,9 +78,9 @@ const Targets = memo(({ parentId, updateTableData, beforeData }) => {
         return data;
       });
     });
-  }, []);
+  };
 
-  const selectChange = useCallback((newValue, stackId) => {
+  const selectChange = (newValue, stackId) => {
     // console.log("selectChange", newValue);
     // 状態を更新
     setTargetData((prevTargetData) => {
@@ -85,7 +91,7 @@ const Targets = memo(({ parentId, updateTableData, beforeData }) => {
         return data;
       });
     });
-  }, []);
+  };
 
   //AutoCompleteに渡す選択肢に初期値を追加
   const fieldsData = GetKintoneFields();
@@ -125,30 +131,48 @@ const Targets = memo(({ parentId, updateTableData, beforeData }) => {
             onChange={selectChange}
             parentId={parentId}
           ></AutoComplete>
-          <SelectBox
-            id="display"
-            label="表示方法"
-            value={data.display}
-            onChange={(e) => handleChange(e, data.id)}
-            options={[
-              { value: "tooltip", label: "ツールチップ" },
-              { value: "alert", label: "アラート" },
-              { value: "subWindow", label: "サブウィンドウ" },
-              { value: "link", label: "リンク" },
-              // { value: "button", label: "ボタン" },
-            ]}
-          ></SelectBox>
+          <div sx={{ display: "flex", flexDirection: "row" }}>
+            <SelectBox
+              id="display"
+              label="表示方法"
+              value={data.display}
+              onChange={(e) => handleChange(e, data.id)}
+              options={[
+                { value: "tooltip", label: "ツールチップ" },
+                { value: "alert", label: "アラート" },
+                { value: "subWindow", label: "サブウィンドウ" },
+                { value: "link", label: "リンク" },
+                // { value: "button", label: "ボタン" },
+              ]}
+            ></SelectBox>
+            <SelectBox_subWinId
+              id="subWindowId"
+              label="サブウィンドウID"
+              value={data.subWindowId}
+              displayValue={data.display}
+              onChange={(e) => handleChange(e, data.id)}
+              options={[
+                { value: "1", label: "1" },
+                { value: "2", label: "2" },
+                { value: "3", label: "3" },
+                { value: "4", label: "4" },
+                { value: "5", label: "5" },
+              ]}
+            ></SelectBox_subWinId>
+          </div>
           <TextArea
             id={"message"}
             label={"メッセージ"}
             value={data.message}
             onChange={(e) => handleChange(e, data.id)}
+            displayValue={data.display}
           ></TextArea>
           <TextArea
             id={"url"}
-            label={"URL (サブウィンドウ・リンク選択時)"}
+            label={"URL"}
             value={data.url}
             onChange={(e) => handleChange(e, data.id)}
+            displayValue={data.display}
           ></TextArea>
           <Stack direction="row" alignItems="center">
             <AddButton onClick={() => addRow(index)}></AddButton>

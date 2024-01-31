@@ -5,7 +5,7 @@ import FormLabel from "@mui/joy/FormLabel";
 import FormHelperText from "@mui/joy/FormHelperText";
 import Input from "@mui/joy/Input";
 import { memo } from "react";
-import styles from "../../css/AutoComplete.module.css";
+import styles from "./AutoComplete.module.css";
 
 const AutoComplete = memo(
   ({ id, value, options, label, stackId, onChange, placeholder }) => {

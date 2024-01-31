@@ -4,13 +4,13 @@ import TextField from "@mui/material/TextField";
 import { Button, IconButton, Stack } from "@mui/material";
 import generateUniqueId from "../../utils/UnipueId";
 import { Add, AddCircle, Remove, RemoveCircle } from "@mui/icons-material";
-import AddButton from "../common/AddButton";
-import RemoveButton from "../common/RemoveButton";
+import AddButton from "../common/AddButton/AddButton";
+import RemoveButton from "../common/RemoveButton/RemoveButton";
 import GetKintoneFields from "../../services/GetKintoneFields";
-import AutoComplete from "../common/AutoComplete";
-import Input from "../common/Input";
+import AutoComplete from "../common/AutoComplete/AutoComplete";
+import Input from "../common/Input/Input";
 import { FormControl, FormLabel, Radio, RadioGroup } from "@mui/joy";
-import RadioButton from "../common/RadioButton";
+import RadioButton from "../common/RadioButton/RadioButton";
 
 const Conditions = memo(({ parentId, updateTableData, beforeData }) => {
   const fieldsData = GetKintoneFields();

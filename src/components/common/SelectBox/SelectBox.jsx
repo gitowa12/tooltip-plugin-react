@@ -1,5 +1,5 @@
 import * as React from "react";
-import styles from "../../css/SelectBox.module.css";
+import styles from "./SelectBox.module.css";
 import { memo } from "react";
 
 const SelectBox = memo(({ id, value, label, onChange, options }) => {
@@ -8,10 +8,16 @@ const SelectBox = memo(({ id, value, label, onChange, options }) => {
       {option.label}
     </option>
   ));
+
   return (
-    <div className="container">
+    <div className={styles.container}>
       <label className={styles.label}>{label}</label>
-      <select id={id} className={styles.selectBox} value={value} onChange={onChange}>
+      <select
+        id={id}
+        className={styles.selectBox}
+        value={value}
+        onChange={onChange}
+      >
         {menuItems}
       </select>
     </div>
