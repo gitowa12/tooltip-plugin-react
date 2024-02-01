@@ -1,5 +1,4 @@
 node_modules
 private.ppk
-plugin.zip
-config.js
-desktop.js
+dist/plugin.zip
+plugin/js/
