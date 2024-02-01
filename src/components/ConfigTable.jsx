@@ -12,7 +12,7 @@ import Conditions from "./Condition/Condition";
 import Targets from "./Target/Target";
 import RadioButton from "./common/RadioButton/RadioButton";
 import { FormProvider, useForm } from "react-hook-form";
-import styles from "../css/ConfigTable.module.css";
+import styles from "./ConfigTable.module.css";
 import Swal from "sweetalert2";
 
 const ConfigTable = ({ beforeConfig }) => {

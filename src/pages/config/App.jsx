@@ -9,13 +9,12 @@ const getConfig = kintone.plugin.app.getConfig(PLUGIN_ID);
 
 const keysArray = Object.keys(getConfig);
 // console.log(keysArray);
-
+//keyの順番を昇順に並び替え
 keysArray.sort((a, b) => {
   const numA = parseInt(a.replace("key", ""));
   const numB = parseInt(b.replace("key", ""));
   return numA - numB;
 });
-
 // console.log(keysArray);
 
 let config = {}; // config を最初に初期化
