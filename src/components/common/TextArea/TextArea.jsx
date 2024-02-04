@@ -2,7 +2,7 @@ import { FormControl } from "@mui/material";
 import React, { memo } from "react";
 import styles from "./TextArea.module.css";
 
-const TextArea = memo(({ id, label, value, onChange, displayValue }) => {
+const TextArea = ({ id, label, value, onChange, displayValue }) => {
   //表示方法によって表示・非表示を切り替え
   let visibleBool = false;
   let linkBool = false;
@@ -36,6 +36,6 @@ const TextArea = memo(({ id, label, value, onChange, displayValue }) => {
       ></textarea>
     </div>
   );
-});
+};
 
 export default TextArea;

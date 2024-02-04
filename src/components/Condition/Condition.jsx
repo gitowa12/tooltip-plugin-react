@@ -11,8 +11,9 @@ import AutoComplete from "../common/AutoComplete/AutoComplete";
 import Input from "../common/Input/Input";
 import { FormControl, FormLabel, Radio, RadioGroup } from "@mui/joy";
 import RadioButton from "../common/RadioButton/RadioButton";
+import styles from "./Condition.module.css";
 
-const Conditions = memo(({ parentId, updateTableData, beforeData }) => {
+const Conditions = ({ parentId, updateTableData, beforeData }) => {
   const fieldsData = GetKintoneFields();
   const defaultOption = {
     fieldId: "default",
@@ -134,6 +135,6 @@ const Conditions = memo(({ parentId, updateTableData, beforeData }) => {
       ))}
     </Box>
   );
-});
+};
 
 export default Conditions;

@@ -2,7 +2,7 @@ import * as React from "react";
 import styles from "./SelectBox.module.css";
 import { memo } from "react";
 
-const SelectBox = memo(({ id, value, label, onChange, options }) => {
+const SelectBox = ({ id, value, label, onChange, options }) => {
   const menuItems = (options || []).map((option) => (
     <option key={option.value} value={option.value}>
       {option.label}
@@ -22,7 +22,7 @@ const SelectBox = memo(({ id, value, label, onChange, options }) => {
       </select>
     </div>
   );
-});
+};
 
 export default SelectBox;
 // export default function SelectBox({ id, value, label, onChange, options }) {

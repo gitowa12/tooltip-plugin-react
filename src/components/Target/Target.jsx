@@ -13,7 +13,7 @@ import AutoComplete from "../common/AutoComplete/AutoComplete";
 import LabelAndHelperText from "../common/AutoComplete/AutoComplete";
 import { width } from "@mui/system";
 
-const Targets = memo(({ parentId, updateTableData, beforeData }) => {
+const Targets = ({ parentId, updateTableData, beforeData }) => {
   /* console.log(fieldsData); */
   const createRow = () => {
     const obj = {
@@ -184,6 +184,6 @@ const Targets = memo(({ parentId, updateTableData, beforeData }) => {
       ))}
     </Box>
   );
-});
+};
 
 export default Targets;

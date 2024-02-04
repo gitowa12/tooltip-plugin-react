@@ -149,11 +149,12 @@ const ConfigTable = ({ beforeConfig }) => {
         sx={{
           width: "fit-content",
         }}
+        className={styles.fonts}
       >
         <Button
           variant="contained"
           onClick={() => addRow()}
-          sx={{ m: 1, mt: 0 }}
+          sx={{ m: 1, mt: 0, fontFamily: "Noto Sans JP" }}
         >
           行の追加
         </Button>
@@ -168,8 +169,12 @@ const ConfigTable = ({ beforeConfig }) => {
           <Table size="small" aria-label="a dense table">
             <TableHead sx={{ background: "#fdfdfe" }}>
               <TableRow>
-                <TableCell>条件元フィールド</TableCell>
-                <TableCell>対象とするフィールド</TableCell>
+                <TableCell sx={{ fontFamily: "Noto Sans JP" }}>
+                  条件元フィールド
+                </TableCell>
+                <TableCell sx={{ fontFamily: "Noto Sans JP" }}>
+                  対象とするフィールド
+                </TableCell>
                 <TableCell></TableCell>
               </TableRow>
             </TableHead>
@@ -209,6 +214,7 @@ const ConfigTable = ({ beforeConfig }) => {
                       variant="outlined"
                       color="error"
                       onClick={() => removeRow(data.id)}
+                      sx={{ fontFamily: "Noto Sans JP" }}
                     >
                       削除
                     </Button>
@@ -229,14 +235,14 @@ const ConfigTable = ({ beforeConfig }) => {
             variant="contained"
             type="button"
             onClick={handleSubmit(handleSave, onError)}
-            sx={{ width: "110px" }}
+            sx={{ width: "110px", fontFamily: "Noto Sans JP" }}
           >
             保存
           </Button>
           <Button
             variant="outlined"
             onClick={() => history.back()}
-            sx={{ width: "110px" }}
+            sx={{ width: "110px", fontFamily: "Noto Sans JP" }}
           >
             キャンセル
           </Button>

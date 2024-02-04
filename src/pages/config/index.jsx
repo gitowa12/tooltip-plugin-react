@@ -6,6 +6,7 @@ import App from "./App";
 
 import "normalize.css";
 import "./index.css";
+import { ThemeProvider, createTheme } from "@mui/system";
 // import "@fontsource-variable/inter";
 
 const container = document.getElementById("config-root");

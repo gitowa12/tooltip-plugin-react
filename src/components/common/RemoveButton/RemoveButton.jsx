@@ -2,7 +2,7 @@ import { RemoveCircle } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
 import React, { memo } from "react";
 
-const RemoveButton = memo(({ onClick }) => {
+const RemoveButton = ({ onClick }) => {
   return (
     <IconButton
       sx={{ mt: "10px", padding: "5px" }}
@@ -14,6 +14,6 @@ const RemoveButton = memo(({ onClick }) => {
       <RemoveCircle fontSize="inherit" />
     </IconButton>
   );
-});
+};
 
 export default RemoveButton;
